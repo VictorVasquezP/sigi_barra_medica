@@ -73,6 +73,42 @@ class DataTypesTableSeeder extends Seeder
                 'created_at' => '2022-11-09 13:18:29',
                 'updated_at' => '2022-11-09 14:02:45',
             ),
+            3 => 
+            array (
+                'id' => 4,
+                'name' => 'rooms',
+                'slug' => 'rooms',
+                'display_name_singular' => 'Habitación',
+                'display_name_plural' => 'Habitaciones',
+                'icon' => 'voyager-home',
+                'model_name' => 'App\\Models\\Room',
+                'policy_name' => NULL,
+                'controller' => NULL,
+                'description' => NULL,
+                'generate_permissions' => 1,
+                'server_side' => 0,
+                'details' => '{"order_column":null,"order_display_column":null,"order_direction":"asc","default_search_key":null}',
+                'created_at' => '2023-01-17 00:25:58',
+                'updated_at' => '2023-01-17 00:25:58',
+            ),
+            4 => 
+            array (
+                'id' => 5,
+                'name' => 'type_rooms',
+                'slug' => 'type-rooms',
+                'display_name_singular' => 'Tipo de habitación',
+                'display_name_plural' => 'Tipo de habitaciones',
+                'icon' => 'voyager-double-right',
+                'model_name' => 'App\\Models\\TypeRoom',
+                'policy_name' => NULL,
+                'controller' => NULL,
+                'description' => NULL,
+                'generate_permissions' => 1,
+                'server_side' => 0,
+                'details' => '{"order_column":null,"order_display_column":null,"order_direction":"asc","default_search_key":null}',
+                'created_at' => '2023-01-17 00:27:55',
+                'updated_at' => '2023-01-17 00:27:55',
+            ),
         ));
         
         
