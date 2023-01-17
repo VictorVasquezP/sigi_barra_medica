@@ -33,6 +33,20 @@ class StatusesTableSeeder extends Seeder
                 'created_at' => NULL,
                 'updated_at' => NULL,
             ),
+            2 => 
+            array (
+                'id' => 3,
+                'name' => 'Abierto',
+                'created_at' => NULL,
+                'updated_at' => NULL,
+            ),
+            3 => 
+            array (
+                'id' => 4,
+                'name' => 'Cerrado',
+                'created_at' => NULL,
+                'updated_at' => NULL,
+            ),
         ));
         
         

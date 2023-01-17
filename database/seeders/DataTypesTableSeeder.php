@@ -109,6 +109,24 @@ class DataTypesTableSeeder extends Seeder
                 'created_at' => '2023-01-17 00:27:55',
                 'updated_at' => '2023-01-17 01:19:08',
             ),
+            5 => 
+            array (
+                'id' => 6,
+                'name' => 'commands',
+                'slug' => 'commands',
+                'display_name_singular' => 'Registro',
+                'display_name_plural' => 'Registros',
+                'icon' => NULL,
+                'model_name' => 'App\\Models\\Command',
+                'policy_name' => NULL,
+                'controller' => 'App\\Http\\Controllers\\CommandController',
+                'description' => NULL,
+                'generate_permissions' => 1,
+                'server_side' => 0,
+                'details' => '{"order_column":null,"order_display_column":null,"order_direction":"asc","default_search_key":null,"scope":null}',
+                'created_at' => '2023-01-17 05:55:40',
+                'updated_at' => '2023-01-17 06:03:30',
+            ),
         ));
         
         
