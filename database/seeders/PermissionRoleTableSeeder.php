@@ -179,6 +179,81 @@ class PermissionRoleTableSeeder extends Seeder
                 'permission_id' => 25,
                 'role_id' => 1,
             ),
+            32 => 
+            array (
+                'permission_id' => 26,
+                'role_id' => 1,
+            ),
+            33 => 
+            array (
+                'permission_id' => 27,
+                'role_id' => 1,
+            ),
+            34 => 
+            array (
+                'permission_id' => 28,
+                'role_id' => 1,
+            ),
+            35 => 
+            array (
+                'permission_id' => 29,
+                'role_id' => 1,
+            ),
+            36 => 
+            array (
+                'permission_id' => 30,
+                'role_id' => 1,
+            ),
+            37 => 
+            array (
+                'permission_id' => 31,
+                'role_id' => 1,
+            ),
+            38 => 
+            array (
+                'permission_id' => 32,
+                'role_id' => 1,
+            ),
+            39 => 
+            array (
+                'permission_id' => 33,
+                'role_id' => 1,
+            ),
+            40 => 
+            array (
+                'permission_id' => 34,
+                'role_id' => 1,
+            ),
+            41 => 
+            array (
+                'permission_id' => 35,
+                'role_id' => 1,
+            ),
+            42 => 
+            array (
+                'permission_id' => 46,
+                'role_id' => 1,
+            ),
+            43 => 
+            array (
+                'permission_id' => 47,
+                'role_id' => 1,
+            ),
+            44 => 
+            array (
+                'permission_id' => 48,
+                'role_id' => 1,
+            ),
+            45 => 
+            array (
+                'permission_id' => 49,
+                'role_id' => 1,
+            ),
+            46 => 
+            array (
+                'permission_id' => 50,
+                'role_id' => 1,
+            ),
         ));
         
         

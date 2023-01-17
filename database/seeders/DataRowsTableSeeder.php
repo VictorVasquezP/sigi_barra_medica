@@ -400,7 +400,7 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 1,
-                'details' => '{}',
+                'details' => '{"validation":{"rule":"required|min:1|max:5","messages":{"required":"El campo nombre es requerido.","max":"Se permite hasta 50 caracteres en el campo nombre","min":"Debe ingresar un nombre mayor de un caracter"}}}',
                 'order' => 2,
             ),
             24 => 
@@ -411,8 +411,8 @@ class DataRowsTableSeeder extends Seeder
                 'type' => 'text',
                 'display_name' => 'Tipo',
                 'required' => 1,
-                'browse' => 1,
-                'read' => 1,
+                'browse' => 0,
+                'read' => 0,
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 1,
@@ -420,22 +420,6 @@ class DataRowsTableSeeder extends Seeder
                 'order' => 3,
             ),
             25 => 
-            array (
-                'id' => 26,
-                'data_type_id' => 4,
-                'field' => 'status',
-                'type' => 'text',
-                'display_name' => 'Estatus',
-                'required' => 1,
-                'browse' => 1,
-                'read' => 1,
-                'edit' => 1,
-                'add' => 1,
-                'delete' => 1,
-                'details' => '{}',
-                'order' => 4,
-            ),
-            26 => 
             array (
                 'id' => 27,
                 'data_type_id' => 4,
@@ -449,9 +433,9 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 0,
                 'delete' => 1,
                 'details' => '{}',
-                'order' => 5,
+                'order' => 7,
             ),
-            27 => 
+            26 => 
             array (
                 'id' => 28,
                 'data_type_id' => 4,
@@ -465,9 +449,9 @@ class DataRowsTableSeeder extends Seeder
                 'add' => 0,
                 'delete' => 0,
                 'details' => '{}',
-                'order' => 6,
+                'order' => 8,
             ),
-            28 => 
+            27 => 
             array (
                 'id' => 29,
                 'data_type_id' => 5,
@@ -483,7 +467,7 @@ class DataRowsTableSeeder extends Seeder
                 'details' => '{}',
                 'order' => 1,
             ),
-            29 => 
+            28 => 
             array (
                 'id' => 30,
                 'data_type_id' => 5,
@@ -496,10 +480,10 @@ class DataRowsTableSeeder extends Seeder
                 'edit' => 1,
                 'add' => 1,
                 'delete' => 1,
-                'details' => '{}',
+                'details' => '{"validation":{"rule":"required|min:1|max:5","messages":{"required":"El campo nombre es requerido.","max":"Se permite hasta 50 caracteres en el campo nombre","min":"Debe ingresar un nombre mayor de un caracter"}}}',
                 'order' => 2,
             ),
-            30 => 
+            29 => 
             array (
                 'id' => 31,
                 'data_type_id' => 5,
@@ -515,7 +499,7 @@ class DataRowsTableSeeder extends Seeder
                 'details' => '{}',
                 'order' => 3,
             ),
-            31 => 
+            30 => 
             array (
                 'id' => 32,
                 'data_type_id' => 5,
@@ -527,6 +511,54 @@ class DataRowsTableSeeder extends Seeder
                 'read' => 1,
                 'edit' => 0,
                 'add' => 0,
+                'delete' => 1,
+                'details' => '{}',
+                'order' => 4,
+            ),
+            31 => 
+            array (
+                'id' => 33,
+                'data_type_id' => 4,
+                'field' => 'room_belongsto_type_room_relationship',
+                'type' => 'relationship',
+                'display_name' => 'Tipo',
+                'required' => 1,
+                'browse' => 1,
+                'read' => 1,
+                'edit' => 1,
+                'add' => 1,
+                'delete' => 1,
+                'details' => '{"model":"App\\\\Models\\\\TypeRoom","table":"type_rooms","type":"belongsTo","column":"type","key":"id","label":"name","pivot_table":"commands","pivot":"0","taggable":"0"}',
+                'order' => 5,
+            ),
+            32 => 
+            array (
+                'id' => 34,
+                'data_type_id' => 4,
+                'field' => 'room_belongsto_status_relationship',
+                'type' => 'relationship',
+                'display_name' => 'Estatus',
+                'required' => 1,
+                'browse' => 1,
+                'read' => 1,
+                'edit' => 1,
+                'add' => 1,
+                'delete' => 1,
+                'details' => '{"model":"App\\\\Models\\\\Status","table":"statuses","type":"belongsTo","column":"status_id","key":"id","label":"name","pivot_table":"commands","pivot":"0","taggable":"0"}',
+                'order' => 6,
+            ),
+            33 => 
+            array (
+                'id' => 35,
+                'data_type_id' => 4,
+                'field' => 'status_id',
+                'type' => 'text',
+                'display_name' => 'Status Id',
+                'required' => 1,
+                'browse' => 0,
+                'read' => 0,
+                'edit' => 1,
+                'add' => 1,
                 'delete' => 1,
                 'details' => '{}',
                 'order' => 4,
