@@ -20,9 +20,8 @@
 @stop
 
 @section('content')
-{{$data}}
     <div id="app">
-        <command-view url="{{ url('/') }}" date="{{date('Y-m-d')}}" ></command-view>
+        <command-products-view url="{{ url('/') }}" date="{{date('Y-m-d')}}" ></command-products-view>
     </div>
 @stop
 

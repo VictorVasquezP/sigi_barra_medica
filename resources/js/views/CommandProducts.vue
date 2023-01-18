@@ -16,28 +16,60 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <div class="gradient-1">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="d-flex">
-                                <label for="product_id" class="control-label" style="padding-right: 5px;">Producto:
-                                </label>
-                                <v-select name="product_id" class="" style="flex: 1; border: 1px solid #8F8F8F;"
-                                    :options="products" :reduce="product => product.id" label="name"
-                                    v-model="product_id"></v-select>
-                            </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="d-flex" style="width: 90%; margin: auto;">
+                            <label for="product_id" class="control-label"
+                                style="padding-right: 5px;width: 15%;text-align: right;margin: auto; color: black; font-size: 12pt;">Buscar
+                                Insumo:
+                            </label>
+                            <v-select name="product_id" class="" style="flex: 1; border: 1px solid #8F8F8F;"
+                                :options="products" :reduce="product => product.id" label="name"
+                                v-model="product_id"></v-select>
                         </div>
                     </div>
                 </div>
+                <table class="table" v-show="(product_id != undefined)">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Descripción</th>
+                            <th scope="col">Categoria</th>
+                            <th scope="col">Precio unitario</th>
+                            <th scope="col">Disponibilidad</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ product.name }}</td>
+                            <td>{{ product.description }}</td>
+                            <td>{{ product.category }}</td>
+                            <td>$ {{ product.price }}</td>
+                            <td>{{ product.amount }}</td>
+                            <td>
+                                <div class="form-wizard">
+                                    <input type="number" name="quantity" id="quantity" v-model="quantity"
+                                        class="form-control" style="width: 100px;" />
+                                </div>
+                            </td>
+                            <td>
+                                <button class="btn btn-success" @click="addProduct"><i class="voyager-plus"
+                                        style="width: 20px;"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="table-responsive">
                     <div class="text-center">
-                        <h3>Productos seleccionados</h3>
+                        <h3 style="margin: 0px 0px 15px 0px;">LISTA DE INSUMOS</h3>
                     </div>
-                    <vue-good-table styleClass="vgt-table condensed" :columns="columns" :rows="products"
+                    <vue-good-table styleClass="vgt-table condensed" :columns="columns" :rows="myproducts"
                         :search-options="{
                             enabled: true,
                             placeholder: 'Buscar en la tabla...',
@@ -98,6 +130,9 @@ export default {
             showredirect: false,
             product_id: undefined,
             products: [],
+            product: {},
+            quantity: 0,
+            myproducts: [],
             columns: [
                 {
                     label: 'Nombre',
@@ -133,11 +168,25 @@ export default {
     },
     methods: {
         saveSale: function () {
-            if (this.validateForm()) {
-                // this.showspinner = true;
-                var token = $('meta[name="csrf-token"]').attr('content');
-                console.log('save');
-            }
+            this.showspinner = true;
+            var token = $('meta[name="csrf-token"]').attr('content');
+            this.serviceCommand.saveInsumos(this.myproducts, token).then(response => {
+                this.showspinner = false;
+                if (response.status === 200) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: response.message,
+                        showConfirmButton: false,
+                        timer: 1500,
+                    })
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: response.message,
+                    })
+                }
+            });
         },
         getProducts: function () {
             this.serviceProduct.getProducts().then(response => {
@@ -146,47 +195,142 @@ export default {
                 }
             });
         },
-        validateForm() {
-            // if( this.store.customer_id === undefined){
-            //     Swal.fire({
-            //         icon: 'error',
-            //         title: 'Datos incompletos',
-            //         text: "Hace falta seleccionar un cliente",
-            //     });
-            //     return false;
-            // }
-            return true;
+        addProduct() {
+            if (Number.parseInt(this.quantity) > 0) {
+                var aux = this.products.find(x => x.id == this.product_id);
+                if (aux.amount >= this.quantity) {
+                    aux.amount -= this.quantity;
+                    var item = this.myproducts.find(x => x.id == this.product_id);
+                    if (item != undefined) {//si esta registrado y solo aumentamos la cantidad
+                        item.quantity = Number.parseInt(item.quantity) + Number.parseInt(this.quantity);
+                        item.total = Number.parseInt(item.quantity) * Number.parseFloat(item.price);
+                    } else {
+                        item = {
+                            name: aux.name,
+                            description: aux.description,
+                            price: aux.price,
+                            quantity: Number.parseInt(this.quantity),
+                            total: Number.parseInt(this.quantity) * Number.parseFloat(aux.price),
+                            id: this.product_id
+                        };
+                        this.myproducts.push(item);
+                    }
+                    this.quantity = 0;
+                    this.product_id = undefined;
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'No hay existencias suficiente para la cantidad solicitada',
+                    });
+                }
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Sin cantidad',
+                    text: 'Debe ingresar una cantidad mayor a cero',
+                });
+            }
+        },
+        incrementProduct: function (id) {
+            var aux = this.products.find(x => x.id == id);
+            aux.amount = Number.parseInt(aux.amount) - 1;
+            var item = this.myproducts.find(x => x.id == id);
+            item.quantity = Number.parseInt(item.quantity) + 1;
+            item.total = Number.parseInt(item.quantity) * Number.parseFloat(item.price);
+        },
+        reduceProduct: function (id) {
+            var aux = this.products.find(x => x.id == id);
+            aux.amount = Number.parseInt(aux.amount) + 1;
+            var item = this.myproducts.find(x => x.id == id);
+            item.quantity = Number.parseInt(item.quantity) - 1;
+            item.total = Number.parseInt(item.quantity) * Number.parseFloat(item.price);
+        },
+        removeProduct: function (id) {
+            for (var i = 0; i < this.myproducts.length; i++) {
+                if (this.myproducts[i].id === id) {
+                    this.products.find(product => product.id === id).amount += this.myproducts[i].quantity;
+                    this.myproducts.splice(i, 1);
+                }
+            }
         }
     },
     watch: {
         product_id: function (val) {
-            console.log(val);
+            if (val == undefined) {
+                this.product = {};
+            } else {
+                this.product = this.products.find(x => x.id == val);
+            }
         }
     }
 }
 </script>
 <style>
+.row>[class*=col-] {
+    margin-bottom: 15px;
+}
+
 .gradient-1 {
-    padding: 7px;
-    border: 4px solid #FFF;
-    outline: 4px solid #2f8fb4;
+    padding: 3px 7px 0px 7px;
+    border: 3px solid #FFF;
+    outline: 3px solid #2f8fb4;
     color: black;
+}
+
+.d-flex {
+    display: flex;
 }
 
 .form-wizard .select2-container {
     border: 1px solid rgb(82, 82, 82);
 }
 
-.payment .form-wizard {
-    display: flex;
-    justify-content: center;
+.form-wizard input[type=number] {
+    border: 1px solid rgb(82, 82, 82);
 }
 
-.payment label {
-    width: 25%;
+.voyager .table thead tr th {
+    background-color: #17ac7f;
+    color: #FFF;
 }
 
-.payment .form-control {
-    width: 75%;
+.voyager .table {
+    margin-bottom: 0;
+}
+
+.voyager .table tbody {
+    color: black;
+}
+
+.btn-product-list {
+    width: 33px;
+    height: 33px;
+    color: white;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    font-size: 13px;
+    text-transform: uppercase;
+    border: transparent;
+    display: inline-block;
+}
+
+.btn-product-list:hover {
+    opacity: 0.70;
+    -moz-opacity: .70;
+    filter: alpha (opacity=70);
+}
+
+.btn-increment {
+    background-color: #24C334;
+}
+
+.btn-reduce {
+    background-color: #006983;
+}
+
+.btn-remove {
+    background-color: #910000;
 }
 </style>
