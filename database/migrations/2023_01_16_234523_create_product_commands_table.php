@@ -18,6 +18,8 @@ class CreateProductCommandsTable extends Migration
             $table->integer('command_id');
             $table->integer('product_id');
             $table->decimal('price',10,2);
+            $table->integer('quantity');
+            $table->decimal('total', 10, 2);
             $table->timestamps();
         });
     }
