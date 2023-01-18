@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Command;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -39,6 +40,32 @@ class CommandController extends VoyagerBaseController
         $view = 'commands.create';
 
         return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
+    }
+
+    public function storeCommand(Request $request)
+    {
+        $array = [];
+        DB::beginTransaction();
+        try {
+            $command = new Command();
+            $command->patient = $request->patient;
+            $command->address = $request->address;
+            $command->date_admission = date('Y-m-d H:i:s',strtotime($request->date_admission));
+            $command->diagnostic = $request->diagnostic;
+            $command->doctor = $request->doctor;
+            $command->nurse = $request->nurse;
+            $command->doctor_shift = $request->doctor_shift;
+            $command->type = $request->type;
+            $command->status_id = 3;
+            $command->save();
+            DB::commit();
+            $array = ['status' => 200, 'message' => 'Se registró el registro', 'data' => $command]; 
+        } catch (Exception $ex) {
+            DB::rollBack();
+            $array = ['status' => 500, 'message' => 'No se pudo registrar el registro',  'data' => $ex];
+        }finally{
+            return $array;
+        }
     }
 
     public function edit(Request $request, $id)
