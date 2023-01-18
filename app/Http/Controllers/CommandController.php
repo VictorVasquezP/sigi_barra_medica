@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Command;
+use App\Models\Product;
+use App\Models\ProductCommand;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -81,7 +84,42 @@ class CommandController extends VoyagerBaseController
         $this->eagerLoadRelations($dataTypeContent, $dataType, 'edit', $isModelTranslatable);
 
         $view = 'commands.edit';
-        $data = 5;
-        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable','data'));
+        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
+    }
+
+    public function saveInsumos(Request $request, $id){
+        $array = [];
+        DB::beginTransaction();
+        try {
+            $command = Command::find($id);
+            foreach ($request->products as $product) {
+                if($command->insumos->contains('product_id','=',$product["id"])){ // si ya esta registrado solo actualizamos
+                    $insumo = ProductCommand::where('command_id','=',$id)
+                                ->where('product_id','=',$product["id"])
+                                ->first();
+                    $insumo->quantity = $product["quantity"];
+                    $insumo->total = $product["total"];
+                    $insumo->update();
+                }else{
+                    $insumo = new ProductCommand();
+                    $insumo->command_id = $id;
+                    $insumo->product_id = $product["id"];
+                    $insumo->price = $product["price"];
+                    $insumo->quantity = $product["quantity"];
+                    $insumo->total = $product["total"];
+                    $insumo->save();
+                    $prod = Product::find($insumo->product_id);
+                    $prod->amount -= $insumo->quantity;
+                    $prod->update();
+                }
+            }
+            DB::commit();
+            $array = ['status' => 200, 'message' => 'Se actualizó la lista de insumos', 'data' => $id]; 
+        } catch (Exception $ex) {
+            DB::rollBack();
+            $array = ['status' => 500, 'message' => 'No se pudo actualizar la lista de insumos',  'data' => $ex->getMessage()];
+        }finally{
+            return $array;
+        }
     }
 }

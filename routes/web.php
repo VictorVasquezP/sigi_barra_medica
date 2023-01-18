@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProductController;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 use TCG\Voyager\Facades\Voyager;
 
@@ -19,11 +20,11 @@ Route::get('/', function () {
     return redirect('/admin');
 });
 
-
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 });
 
 Route::group(['prefix' => 'api'], function () {
     Route::get('/products', [ProductController::class,'getProducts']);
+    Route::put('/saveInsumos', [CommandController::class,'saveInsumos']);
 });
