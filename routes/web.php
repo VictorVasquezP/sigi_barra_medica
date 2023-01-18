@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommandController;
 use App\Http\Controllers\ProductController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
@@ -26,5 +27,6 @@ Route::group(['prefix' => 'admin'], function () {
 
 Route::group(['prefix' => 'api'], function () {
     Route::get('/products', [ProductController::class,'getProducts']);
+    Route::post('/command/add', [CommandController::class,'storeCommand']);
     Route::put('/saveInsumos', [CommandController::class,'saveInsumos']);
 });
