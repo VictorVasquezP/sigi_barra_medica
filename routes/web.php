@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\CommandController;
 use App\Http\Controllers\ProductController;
+use App\Models\Command;
 use App\Models\Product;
+use App\Models\ProductCommand;
 use Illuminate\Support\Facades\Route;
 use TCG\Voyager\Facades\Voyager;
 
@@ -28,5 +30,6 @@ Route::group(['prefix' => 'admin'], function () {
 Route::group(['prefix' => 'api'], function () {
     Route::get('/products', [ProductController::class,'getProducts']);
     Route::post('/command/add', [CommandController::class,'storeCommand']);
-    Route::put('/saveInsumos', [CommandController::class,'saveInsumos']);
+    Route::put('/save-insumos/{id}', [CommandController::class,'saveInsumos']);
+    Route::get('/command/{id}/insumos', [CommandController::class,'insumos']);
 });

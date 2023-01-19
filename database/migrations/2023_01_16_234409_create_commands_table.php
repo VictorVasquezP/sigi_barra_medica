@@ -22,7 +22,7 @@ class CreateCommandsTable extends Migration
             $table->string('diagnostic');
             $table->string('doctor',80);
             $table->string('nurse',80);
-            $table->string('doctor_shift',80);
+            $table->string('doctor_shift',80)->nullable();
             $table->string('type',20);
             $table->integer('status_id');
             $table->timestamps();

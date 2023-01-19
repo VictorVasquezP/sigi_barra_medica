@@ -10,7 +10,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="gradient-1">
-                    datos generales
+                    {{command.patient}}, 
+                    {{command.address}}
                 </div>
             </div>
         </div>
@@ -159,19 +160,21 @@ export default {
                     field: 'actions',
                 }
             ],
+            command: {}
         }
     },
     mounted: function () {
         this.serviceCommand = factoryApi('command');
         this.serviceProduct = factoryApi('product');
         this.getProducts();
+        this.command = JSON.parse(this.info);
+        this.getInsumos(this.command.id);
     },
     methods: {
         saveSale: function () {
-            this.showspinner = true;
             var token = $('meta[name="csrf-token"]').attr('content');
-            this.serviceCommand.saveInsumos(this.myproducts, token).then(response => {
-                this.showspinner = false;
+            this.serviceCommand.saveInsumos(this.myproducts, token, this.command.id).then(response => {
+                console.log(response);
                 if (response.status === 200) {
                     Swal.fire({
                         icon: 'success',
@@ -192,6 +195,13 @@ export default {
             this.serviceProduct.getProducts().then(response => {
                 if (response.status === 200) {
                     this.products = response.data;
+                }
+            });
+        },
+        getInsumos: function (id) {
+            this.serviceCommand.getInsumos(id).then(response => {
+                if (response.status === 200) {
+                    this.myproducts = response.data;
                 }
             });
         },
