@@ -108,7 +108,7 @@ class CommandController extends VoyagerBaseController
 
         // Eagerload Relations
         $this->eagerLoadRelations($dataTypeContent, $dataType, 'edit', $isModelTranslatable);
-
+        
         $view = 'commands.edit';
         return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
     }
@@ -119,6 +119,9 @@ class CommandController extends VoyagerBaseController
         try {
             $command = Command::find($id);
             foreach ($request->products as $product) {
+                /**
+                 * Ver cuales se eliminaron
+                 */
                 if($command->insumos->contains('product_id','=',$product["id"])){ // si ya esta registrado solo actualizamos
                     $insumo = ProductCommand::where('command_id','=',$id)
                                 ->where('product_id','=',$product["id"])
@@ -134,16 +137,39 @@ class CommandController extends VoyagerBaseController
                     $insumo->quantity = $product["quantity"];
                     $insumo->total = $product["total"];
                     $insumo->save();
-                    $prod = Product::find($insumo->product_id);
-                    $prod->amount -= $insumo->quantity;
-                    $prod->update();
                 }
+                /**
+                 * Sacar la diferencia entre el valor de antes de insumo y después de insumo
+                 */
+                $prod = Product::find($product["id"]);
+                $prod->amount -= $product["quantity"];
+                $prod->update();
             }
             DB::commit();
             $array = ['status' => 200, 'message' => 'Se actualizó la lista de insumos', 'data' => $id]; 
         } catch (Exception $ex) {
             DB::rollBack();
             $array = ['status' => 500, 'message' => 'No se pudo actualizar la lista de insumos',  'data' => $ex->getMessage()];
+        }finally{
+            return $array;
+        }
+    }
+
+    public function insumos($id){
+        $array = [];
+        try{
+            $insumos = ProductCommand::join('products', 'products.id', '=', 'product_commands.product_id')
+            ->select('product_commands.product_id as id','product_commands.price','product_commands.quantity','product_commands.total', 'products.name', 'products.description')
+            ->where('product_commands.command_id','=',$id)
+            ->get();
+            if(count($insumos) > 0){
+                $array = ['status' => 200, 'message' => 'Se encontraron resultados', 'data'=> $insumos];
+                return $array;
+            }else{
+                $array = ['status'=>204, 'message' => 'No se encontraron resultados', 'data'=>$insumos];
+            }
+        }catch(\Exception $e){
+            $array = ['status'=>500, 'message' => 'No se pudo realizar la consulta', 'data'=>$insumos];
         }finally{
             return $array;
         }
