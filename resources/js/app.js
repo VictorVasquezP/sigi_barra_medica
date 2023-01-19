@@ -10,7 +10,7 @@ Vue.use(require('vue-moment'));
 /**
  * Registro de componentes
  */
-// Vue.component('dashboard-view', require('./views/Dashboard.vue').default);
+Vue.component('dashboard-view', require('./views/Dashboard.vue').default);
 Vue.component('command-view', require('./views/Command.vue').default);
 Vue.component('command-products-view', require('./views/CommandProducts.vue').default);
 

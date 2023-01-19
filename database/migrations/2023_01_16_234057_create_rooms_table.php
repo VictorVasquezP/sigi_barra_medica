@@ -17,7 +17,7 @@ class CreateRoomsTable extends Migration
             $table->increments('id');
             $table->string('name', 50);
             $table->integer('type');
-            $table->integer('status_id');
+            $table->integer('status_id')->default(1);
             $table->timestamps();
         });
     }

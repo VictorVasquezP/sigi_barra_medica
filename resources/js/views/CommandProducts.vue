@@ -10,8 +10,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="gradient-1">
-                    {{command.patient}}, 
-                    {{command.address}}
+                    {{ command.patient }},
+                    {{ command.address }}
                 </div>
             </div>
         </div>
@@ -103,6 +103,17 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-total">
+                    <table class="table">
+                        <tr>
+                            <td>Total: ${{ total.toFixed(2) }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
         <div class="text-center">
             <button class="btn btn-primary" @click="saveSale">Guardar</button>
         </div>
@@ -132,7 +143,7 @@ export default {
             product_id: undefined,
             products: [],
             product: {},
-            quantity: 0,
+            quantity: 1,
             myproducts: [],
             columns: [
                 {
@@ -160,7 +171,8 @@ export default {
                     field: 'actions',
                 }
             ],
-            command: {}
+            command: {},
+            total: 0
         }
     },
     mounted: function () {
@@ -174,7 +186,6 @@ export default {
         saveSale: function () {
             var token = $('meta[name="csrf-token"]').attr('content');
             this.serviceCommand.saveInsumos(this.myproducts, token, this.command.id).then(response => {
-                console.log(response);
                 if (response.status === 200) {
                     Swal.fire({
                         icon: 'success',
@@ -202,6 +213,7 @@ export default {
             this.serviceCommand.getInsumos(id).then(response => {
                 if (response.status === 200) {
                     this.myproducts = response.data;
+                    this.calculateTotal(response.data);
                 }
             });
         },
@@ -225,8 +237,9 @@ export default {
                         };
                         this.myproducts.push(item);
                     }
-                    this.quantity = 0;
+                    this.quantity = 1;
                     this.product_id = undefined;
+                    this.calculateTotal(this.myproducts);
                 } else {
                     Swal.fire({
                         icon: 'error',
@@ -248,21 +261,51 @@ export default {
             var item = this.myproducts.find(x => x.id == id);
             item.quantity = Number.parseInt(item.quantity) + 1;
             item.total = Number.parseInt(item.quantity) * Number.parseFloat(item.price);
+            this.calculateTotal(this.myproducts);
         },
         reduceProduct: function (id) {
             var aux = this.products.find(x => x.id == id);
             aux.amount = Number.parseInt(aux.amount) + 1;
-            var item = this.myproducts.find(x => x.id == id);
-            item.quantity = Number.parseInt(item.quantity) - 1;
-            item.total = Number.parseInt(item.quantity) * Number.parseFloat(item.price);
-        },
-        removeProduct: function (id) {
             for (var i = 0; i < this.myproducts.length; i++) {
                 if (this.myproducts[i].id === id) {
-                    this.products.find(product => product.id === id).amount += this.myproducts[i].quantity;
-                    this.myproducts.splice(i, 1);
+                    this.myproducts[i].quantity = Number.parseInt(this.myproducts[i].quantity) - 1;
+                    this.myproducts[i].total = Number.parseInt(this.myproducts[i].quantity) * Number.parseFloat(this.myproducts[i].price);
+
+                    if (this.myproducts[i].quantity < 1) {
+                        this.myproducts.splice(i, 1);
+                    }
                 }
             }
+            this.calculateTotal(this.myproducts);
+        },
+        removeProduct: function (id) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Quitar insumo',
+                text: '¿Está seguro de quitar este insumo?',
+                showConfirmButton: true,
+                confirmButtonText: 'Sí, Quitar',
+                showCancelButton: true,
+                denyButtonText: 'Cancelar',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    for (var i = 0; i < this.myproducts.length; i++) {
+                        if (this.myproducts[i].id === id) {
+                            this.products.find(product => product.id === id).amount += this.myproducts[i].quantity;
+                            this.myproducts.splice(i, 1);
+                        }
+                    }
+                    this.calculateTotal(this.myproducts);
+                    Swal.fire('Quitado!', '', 'success');
+                }
+            });
+        },
+        calculateTotal: function(list){
+            var aux = 0;
+            list.forEach(element => {
+                aux += Number.parseFloat(element.total);
+            });
+            this.total = aux;
         }
     },
     watch: {
@@ -342,5 +385,18 @@ export default {
 
 .btn-remove {
     background-color: #910000;
+}
+
+.table-total {
+    padding: 3px 10px;
+    border: 2px solid #FFF;
+    outline: 2px solid #C64D0D;
+    background-color: #C64D0D;
+}
+
+.table-total .table {
+    color: rgb(255, 255, 255);
+    text-align: center;
+    font-size: 11pt;
 }
 </style>

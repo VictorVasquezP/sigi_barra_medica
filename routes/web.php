@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CommandController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RoomController;
 use App\Models\Command;
 use App\Models\Product;
 use App\Models\ProductCommand;
@@ -32,4 +33,5 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('/command/add', [CommandController::class,'storeCommand']);
     Route::put('/save-insumos/{id}', [CommandController::class,'saveInsumos']);
     Route::get('/command/{id}/insumos', [CommandController::class,'insumos']);
+    Route::put('/rooms/updateStatus/{id}', [RoomController::class,'updateStatus'])->name('rooms.updateStatus');
 });

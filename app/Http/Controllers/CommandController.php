@@ -23,8 +23,8 @@ class CommandController extends VoyagerBaseController
         $this->authorize('add', app($dataType->model_name));
 
         $dataTypeContent = (strlen($dataType->model_name) != 0)
-                            ? new $dataType->model_name()
-                            : false;
+            ? new $dataType->model_name()
+            : false;
 
         foreach ($dataType->addRows as $key => $row) {
             $dataType->addRows[$key]['col_width'] = $row->details->width ?? 100;
@@ -52,7 +52,7 @@ class CommandController extends VoyagerBaseController
             $command = new Command();
             $command->patient = $request->patient;
             $command->address = $request->address;
-            $command->date_admission = date('Y-m-d H:i:s',strtotime($request->date_admission));
+            $command->date_admission = date('Y-m-d H:i:s', strtotime($request->date_admission));
             $command->diagnostic = $request->diagnostic;
             $command->doctor = $request->doctor;
             $command->nurse = $request->nurse;
@@ -61,11 +61,11 @@ class CommandController extends VoyagerBaseController
             $command->status_id = 3;
             $command->save();
             DB::commit();
-            $array = ['status' => 200, 'message' => 'Se registró el registro', 'data' => $command]; 
+            $array = ['status' => 200, 'message' => 'Se registró el registro', 'data' => $command];
         } catch (Exception $ex) {
             DB::rollBack();
             $array = ['status' => 500, 'message' => 'No se pudo registrar el registro',  'data' => $ex];
-        }finally{
+        } finally {
             return $array;
         }
     }
@@ -84,7 +84,7 @@ class CommandController extends VoyagerBaseController
             if ($model && in_array(SoftDeletes::class, class_uses_recursive($model))) {
                 $query = $query->withTrashed();
             }
-            if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope'.ucfirst($dataType->scope))) {
+            if ($dataType->scope && $dataType->scope != '' && method_exists($model, 'scope' . ucfirst($dataType->scope))) {
                 $query = $query->{$dataType->scope}();
             }
             $dataTypeContent = call_user_func([$query, 'findOrFail'], $id);
@@ -108,28 +108,30 @@ class CommandController extends VoyagerBaseController
 
         // Eagerload Relations
         $this->eagerLoadRelations($dataTypeContent, $dataType, 'edit', $isModelTranslatable);
-        
+
         $view = 'commands.edit';
         return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
     }
 
-    public function saveInsumos(Request $request, $id){
+    public function saveInsumos(Request $request, $id)
+    {
         $array = [];
         DB::beginTransaction();
         try {
             $command = Command::find($id);
+            $insumos = $command->insumos;
+            /** Bucle para agregar o actualizar los datos del insumo en el registro */
+            $diferencia = 0;
             foreach ($request->products as $product) {
-                /**
-                 * Ver cuales se eliminaron
-                 */
-                if($command->insumos->contains('product_id','=',$product["id"])){ // si ya esta registrado solo actualizamos
-                    $insumo = ProductCommand::where('command_id','=',$id)
-                                ->where('product_id','=',$product["id"])
-                                ->first();
+                if ($insumos->contains('product_id', '=', $product["id"])) { // si ya esta registrado solo actualizamos
+                    $insumo = ProductCommand::where('command_id', '=', $id)
+                        ->where('product_id', '=', $product["id"])
+                        ->first();
+                    $diferencia = $product["quantity"] - $insumo->quantity;
                     $insumo->quantity = $product["quantity"];
                     $insumo->total = $product["total"];
                     $insumo->update();
-                }else{
+                } else {
                     $insumo = new ProductCommand();
                     $insumo->command_id = $id;
                     $insumo->product_id = $product["id"];
@@ -139,38 +141,63 @@ class CommandController extends VoyagerBaseController
                     $insumo->save();
                 }
                 /**
-                 * Sacar la diferencia entre el valor de antes de insumo y después de insumo
+                 * Depende la diferencia se regresa o se quita más stock
                  */
-                $prod = Product::find($product["id"]);
-                $prod->amount -= $product["quantity"];
-                $prod->update();
+                if ($diferencia > 0) { //quitamos stock porque agregamos más cantidad de insumo
+                    $prod = Product::find($product["id"]);
+                    $prod->amount -= $diferencia;
+                    $prod->update();
+                } else if ($diferencia < 0) { //devolvemos al stock porque quitamos cantidad de insumo
+                    $prod = Product::find($product["id"]);
+                    $prod->amount += $diferencia * -1;
+                    $prod->update();
+                }
+            }
+
+            /** Bucle para quitar los insumos que eliminaron */
+            foreach ($insumos as $insumo) {
+                $bandera = false;
+                foreach ($request->products as $product) {
+                    if ($product["id"] == $insumo->product_id) { //Si está
+                        $bandera = true;
+                        break;
+                    }
+                }
+                if (!$bandera) {
+                    $prod = Product::find($insumo->product_id);
+                    $prod->amount += $insumo->quantity;
+                    $prod->update();
+
+                    $insumo->delete();
+                }
             }
             DB::commit();
-            $array = ['status' => 200, 'message' => 'Se actualizó la lista de insumos', 'data' => $id]; 
+            $array = ['status' => 200, 'message' => 'Se actualizó la lista de insumos', 'data' => $id];
         } catch (Exception $ex) {
             DB::rollBack();
             $array = ['status' => 500, 'message' => 'No se pudo actualizar la lista de insumos',  'data' => $ex->getMessage()];
-        }finally{
+        } finally {
             return $array;
         }
     }
 
-    public function insumos($id){
+    public function insumos($id)
+    {
         $array = [];
-        try{
+        try {
             $insumos = ProductCommand::join('products', 'products.id', '=', 'product_commands.product_id')
-            ->select('product_commands.product_id as id','product_commands.price','product_commands.quantity','product_commands.total', 'products.name', 'products.description')
-            ->where('product_commands.command_id','=',$id)
-            ->get();
-            if(count($insumos) > 0){
-                $array = ['status' => 200, 'message' => 'Se encontraron resultados', 'data'=> $insumos];
+                ->select('product_commands.product_id as id', 'product_commands.price', 'product_commands.quantity', 'product_commands.total', 'products.name', 'products.description')
+                ->where('product_commands.command_id', '=', $id)
+                ->get();
+            if (count($insumos) > 0) {
+                $array = ['status' => 200, 'message' => 'Se encontraron resultados', 'data' => $insumos];
                 return $array;
-            }else{
-                $array = ['status'=>204, 'message' => 'No se encontraron resultados', 'data'=>$insumos];
+            } else {
+                $array = ['status' => 204, 'message' => 'No se encontraron resultados', 'data' => $insumos];
             }
-        }catch(\Exception $e){
-            $array = ['status'=>500, 'message' => 'No se pudo realizar la consulta', 'data'=>$insumos];
-        }finally{
+        } catch (\Exception $e) {
+            $array = ['status' => 500, 'message' => 'No se pudo realizar la consulta', 'data' => $insumos];
+        } finally {
             return $array;
         }
     }

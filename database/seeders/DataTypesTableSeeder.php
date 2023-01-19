@@ -83,7 +83,7 @@ class DataTypesTableSeeder extends Seeder
                 'icon' => 'voyager-home',
                 'model_name' => 'App\\Models\\Room',
                 'policy_name' => NULL,
-                'controller' => NULL,
+                'controller' => 'App\\Http\\Controllers\\RoomController',
                 'description' => NULL,
                 'generate_permissions' => 1,
                 'server_side' => 0,
