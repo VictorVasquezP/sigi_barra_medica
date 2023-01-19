@@ -201,4 +201,20 @@ class RoomController extends VoyagerBaseController
             return redirect()->route("voyager.rooms.index")->with($data); 
         }
     }
+
+    public function rooms(){
+        $array = [];
+        try{
+            $rooms = Room::rooms()->get();
+            if(count($rooms) > 0){
+                $array = ['status' => 200, 'message' => 'Se encontraron resultados', 'data'=> $rooms];
+            }else{
+                $array = ['status'=>204, 'message' => 'No se encontraron resultados', 'data'=>$rooms];
+            }
+        }catch(\Exception $e){
+            $array = ['status'=>500, 'message' => 'No se pudo realizar la consulta', 'data'=>$rooms];
+        }finally{
+            return $array;
+        }
+    }
 }
