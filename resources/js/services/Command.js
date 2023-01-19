@@ -28,6 +28,22 @@ export class CommandService {
         return data;
     }
 
+    updateStatusCommand = async(command, token,type) => {
+        command.type=type;
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': token
+            },
+            body: JSON.stringify(command)
+        };
+        const response = await fetch('/api/command/updateStatusCommand', requestOptions,type);
+        const data = await response.json();
+        console.log(data);
+        return data;
+    }
+
     saveInsumos = async(insumos, token, id) => {
         let command = {
             products: insumos

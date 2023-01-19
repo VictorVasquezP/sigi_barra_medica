@@ -107,7 +107,10 @@
             </div>
         </div>
         <div class="text-center">
-            <button class="btn btn-primary" @click="saveSale">Guardar</button>
+            <button v-if="(role==1||role==3)&&(command.status_id==3)" class="btn btn-primary" @click="saveSale">Guardar</button>
+            <button v-if="(role==1||role==3)&&(command.status_id==3)" class="btn btn-warning" @click="updateStatusCommand(1)">Cerrar cuenta</button>
+            <button v-if="(role==1)&&(command.status_id==4)" class="btn btn-dark" @click="updateStatusCommand(2)">Abrir cuenta de nuevo</button>
+            <button v-if="(role==1)&&(command.status_id==4)" class="btn btn-success" @click="updateStatusCommand(3)">Finalizado</button>
         </div>
     </div>
 </template>
@@ -124,7 +127,7 @@ Vue.use(VueGoodTablePlugin);
 Vue.component("v-select", vSelect);
 
 export default {
-    props: ['url', 'info', 'date'],
+    props: ['url', 'info', 'date','role_id'],
     components: {},
     data: function () {
         return {
@@ -133,6 +136,8 @@ export default {
             showspinner: false,
             showredirect: false,
             product_id: undefined,
+            role:{},
+            buttonStatus: {},
             products: [],
             product: {},
             quantity: 1,
@@ -173,6 +178,7 @@ export default {
         this.getProducts();
         this.command = JSON.parse(this.info);
         this.getInsumos(this.command.id);
+        this.role = this.role_id;
     },
     methods: {
         saveSale: function () {
@@ -193,6 +199,30 @@ export default {
                     })
                 }
             });
+        },
+        updateStatusCommand: function (type) {
+                this.showspinner = true;
+                var token = $('meta[name="csrf-token"]').attr('content');
+                this.serviceCommand.updateStatusCommand(this.command,token,type).then(response => { 
+                    this.showspinner=false;
+                    if(response.status==200){
+                        Swal.fire({
+                            icon: 'success',
+                            title: response.message,
+                            showConfirmButton: false,
+                            timer: 1500,
+                        }).then(()=>{
+                            this.showredirect = true;
+                            window.location.href = this.url +"/admin/commands";
+                        });
+                    }else{
+                        Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'No se realizó el registro',
+                        });
+                    }
+                });
         },
         getProducts: function () {
             this.serviceProduct.getProducts().then(response => {

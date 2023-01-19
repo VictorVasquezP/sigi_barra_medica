@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\ProductCommand;
 use Illuminate\Http\Request;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use TCG\Voyager\Facades\Voyager;
 use \TCG\Voyager\Http\Controllers\VoyagerBaseController;
@@ -59,6 +60,7 @@ class CommandController extends VoyagerBaseController
             $command->doctor_shift = $request->doctor_shift;
             $command->type = $request->type;
             $command->status_id = 3;
+            $command->room_id = $request->room_id;
             $command->save();
             DB::commit();
             $array = ['status' => 200, 'message' => 'Se registró el registro', 'data' => $command];
@@ -89,6 +91,36 @@ class CommandController extends VoyagerBaseController
         } catch (Exception $ex) {
             DB::rollBack();
             $array = ['status' => 500, 'message' => 'No se pudo actualizar el registro',  'data' => $ex];
+        }finally{
+            return $array;
+        }
+    }
+
+    public function updateStatusCommand(Request $request)
+    {
+        $array = [];
+        DB::beginTransaction();
+        try {
+            $command = Command::find($request->id);
+
+            switch($request->type){
+                case 1:
+                    $status=4;
+                    break;
+                case 2:
+                    $status=3;
+                    break;
+                case 3:
+                    $status=5;
+                    break;
+            }
+            $command->status_id=$status;
+            $command->save();
+            DB::commit();
+            $array = ['status' => 200, 'message' => 'Se actualizo el estatus del registro', 'data' => $command]; 
+        } catch (Exception $ex) {
+            DB::rollBack();
+            $array = ['status' => 500, 'message' => 'No se pudo actualizar el estatus del registro',  'data' => $ex];
         }finally{
             return $array;
         }
@@ -134,7 +166,11 @@ class CommandController extends VoyagerBaseController
         $this->eagerLoadRelations($dataTypeContent, $dataType, 'edit', $isModelTranslatable);
 
         $view = 'commands.edit';
-        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
+
+        $role_id = Auth::user()->role_id;
+        
+        
+        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable','role_id'));
     }
 
     public function saveInsumos(Request $request, $id)

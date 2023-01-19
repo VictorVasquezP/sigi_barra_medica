@@ -38,6 +38,12 @@
                                 <h4 id="htype">{{ command.type }}</h4>
                             </div>
                             <div class="form-group form-wizard col-md-6">
+                                <label for="first_name" class="control-label">Habitación</label>
+                                <div v-for="room in rooms">
+                                    <h4 v-if="room.id==command.room_id" id="hdoctor_shift">{{ room.name }}</h4>
+                                </div>
+                            </div>
+                            <div class="form-group form-wizard col-md-6">
                                 <label for="first_name" class="control-label">Doctor en turno</label>
                                 <h4 id="hdoctor_shift">{{ command.doctor_shift }}</h4>
                             </div>
@@ -86,7 +92,13 @@
                                         <option value="Apex">Apex</option>
                                 </select>
                             </div>
-                            <div class="form-group form-wizard col-md-12">
+                            <div class="form-group form-wizard col-md-6">
+                                <label for="first_name" class="control-label">Habitación</label>
+                                <select  class="form-control select2-ajax" name="room_id" id="room_id" required v-model="command.room_id">
+                                    <option v-for="room in rooms" :value="room.id">{{room.name}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group form-wizard col-md-6">
                                 <label for="first_name" class="control-label">Doctor en turno</label>
                                 <input type="text" id="doctor_shift" name="doctor_shift" class="form-control" maxlength="80"
                                     minlength="1" placeholder="Doctor en turno" required v-model="command.doctor_shift">
@@ -124,13 +136,15 @@ export default {
             showredirect: false,
             isHiddenInfo: true,
             isHiddenForm: false,
-            command: {}
+            command: {},
+            rooms: []
         }
     },
     mounted: function () {
         this.serviceCommand = factoryApi('command');
         this.command = JSON.parse(this.info);
-
+        
+        this.getRooms();
     },
     methods: {
         editCommand: function () {
@@ -214,7 +228,14 @@ export default {
             }
             
             return true;
-        }
+        },
+        getRooms: function () {
+            this.serviceCommand.getRooms().then(response => {
+                if (response.status === 200) {
+                    this.rooms = response.data;
+                }
+            });
+        },
     }
 }
 </script>
