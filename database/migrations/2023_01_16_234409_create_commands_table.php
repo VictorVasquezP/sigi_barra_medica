@@ -25,6 +25,7 @@ class CreateCommandsTable extends Migration
             $table->string('doctor_shift',80)->nullable();
             $table->string('type',20);
             $table->integer('status_id');
+            $table->integer('room_id');
             $table->timestamps();
         });
     }

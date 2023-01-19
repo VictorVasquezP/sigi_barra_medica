@@ -50,4 +50,10 @@ export class CommandService {
         const data = await response.json();
         return data;
     }
+
+    getRooms = async() => {
+        const response = await fetch('/api/rooms');
+        const data = await response.json();
+        return data;
+    }
 }

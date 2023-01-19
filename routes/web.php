@@ -34,5 +34,6 @@ Route::group(['prefix' => 'api'], function () {
     Route::post('/command/edit', [CommandController::class,'editCommand']);
     Route::put('/save-insumos/{id}', [CommandController::class,'saveInsumos']);
     Route::get('/command/{id}/insumos', [CommandController::class,'insumos']);
+    Route::get('/rooms', [RoomController::class,'rooms']);
     Route::put('/rooms/updateStatus/{id}', [RoomController::class,'updateStatus'])->name('rooms.updateStatus');
 });
