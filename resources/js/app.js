@@ -12,6 +12,7 @@ Vue.use(require('vue-moment'));
  */
 // Vue.component('dashboard-view', require('./views/Dashboard.vue').default);
 Vue.component('command-view', require('./views/Command.vue').default);
+Vue.component('command-edit-view', require('./views/CommandEdit.vue').default);
 Vue.component('command-products-view', require('./views/CommandProducts.vue').default);
 
 const app = new Vue({

@@ -70,6 +70,30 @@ class CommandController extends VoyagerBaseController
         }
     }
 
+    public function editCommand(Request $request)
+    {
+        $array = [];
+        DB::beginTransaction();
+        try {
+            $command = Command::find($request->id);
+            $command->patient = $request->patient;
+            $command->address = $request->address;
+            $command->diagnostic = $request->diagnostic;
+            $command->doctor = $request->doctor;
+            $command->nurse = $request->nurse;
+            $command->doctor_shift = $request->doctor_shift;
+            $command->type = $request->type;
+            $command->save();
+            DB::commit();
+            $array = ['status' => 200, 'message' => 'Se actualizo el registro', 'data' => $command]; 
+        } catch (Exception $ex) {
+            DB::rollBack();
+            $array = ['status' => 500, 'message' => 'No se pudo actualizar el registro',  'data' => $ex];
+        }finally{
+            return $array;
+        }
+    }
+
     public function edit(Request $request, $id)
     {
         $slug = $this->getSlug($request);

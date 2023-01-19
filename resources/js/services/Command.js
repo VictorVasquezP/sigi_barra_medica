@@ -14,6 +14,20 @@ export class CommandService {
         return data;
     }
 
+    editCommand = async(command, token) => {
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': token
+            },
+            body: JSON.stringify(command)
+        };
+        const response = await fetch('/api/command/edit', requestOptions);
+        const data = await response.json();
+        return data;
+    }
+
     saveInsumos = async(insumos, token, id) => {
         let command = {
             products: insumos
