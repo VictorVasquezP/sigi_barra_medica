@@ -31,6 +31,7 @@ Route::group(['prefix' => 'admin'], function () {
 Route::group(['prefix' => 'api'], function () {
     Route::get('/products', [ProductController::class,'getProducts']);
     Route::post('/command/add', [CommandController::class,'storeCommand']);
+    Route::post('/command/edit', [CommandController::class,'editCommand']);
     Route::put('/save-insumos/{id}', [CommandController::class,'saveInsumos']);
     Route::get('/command/{id}/insumos', [CommandController::class,'insumos']);
     Route::put('/rooms/updateStatus/{id}', [RoomController::class,'updateStatus'])->name('rooms.updateStatus');
