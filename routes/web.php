@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CommandController;
+use App\Http\Controllers\PdfController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoomController;
 use App\Models\Command;
@@ -37,4 +38,6 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('/command/{id}/insumos', [CommandController::class,'insumos']);
     Route::get('/rooms', [RoomController::class,'rooms']);
     Route::put('/rooms/updateStatus/{id}', [RoomController::class,'updateStatus'])->name('rooms.updateStatus');
+
+    Route::get('/command/pdf/{id}',[PdfController::class,'commandPdf'])->name('command.pdf');
 });
