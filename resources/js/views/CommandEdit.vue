@@ -162,6 +162,7 @@ export default {
                             this.isHiddenForm = false; 
                             this.isHiddenInfo=true;
                             this.getRooms();
+                            this.command = response.data;
                         });
                     }else{
                         Swal.fire({

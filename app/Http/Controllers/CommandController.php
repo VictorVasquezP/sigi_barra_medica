@@ -89,7 +89,6 @@ class CommandController extends VoyagerBaseController
             $command->nurse = $request->nurse;
             $command->doctor_shift = $request->doctor_shift;
             $command->type = $request->type;
-
             $room = Room::find($command->room_id);
             $room->status_id = 1;
             $room->update();
@@ -97,9 +96,9 @@ class CommandController extends VoyagerBaseController
             $room = Room::find($request->room_id);
             $room->status_id = 2;
             $room->update();
-
             $command->save();
             DB::commit();
+            $command->room_name=$command->room->name;
             $array = ['status' => 200, 'message' => 'Se actualizo el registro', 'data' => $command]; 
         } catch (Exception $ex) {
             DB::rollBack();
@@ -185,8 +184,12 @@ class CommandController extends VoyagerBaseController
 
         $role_id = Auth::user()->role_id;
         
+        $command= Command::find($id);
+
+        $command->room_name=$command->room->name;
+
         
-        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable','role_id'));
+        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable','role_id','command'));
     }
 
     public function saveInsumos(Request $request, $id)
