@@ -4,9 +4,6 @@ use App\Http\Controllers\CommandController;
 use App\Http\Controllers\PdfController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoomController;
-use App\Models\Command;
-use App\Models\Product;
-use App\Models\ProductCommand;
 use Illuminate\Support\Facades\Route;
 use TCG\Voyager\Facades\Voyager;
 

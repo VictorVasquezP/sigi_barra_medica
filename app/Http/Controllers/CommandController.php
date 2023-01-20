@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Command;
 use App\Models\Product;
 use App\Models\ProductCommand;
+use App\Models\Room;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -62,6 +63,9 @@ class CommandController extends VoyagerBaseController
             $command->status_id = 3;
             $command->room_id = $request->room_id;
             $command->save();
+            $room = Room::find($request->room_id);
+            $room->status_id = 2;
+            $room->update();
             DB::commit();
             $array = ['status' => 200, 'message' => 'Se registró el registro', 'data' => $command];
         } catch (Exception $ex) {

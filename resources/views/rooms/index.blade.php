@@ -336,7 +336,7 @@
                                     required tabindex="-1" aria-hidden="true">
                                     <option value="1">Disponible</option>
                                     <option value="2">Ocupado</option>
-                                    <option value="">No disponible</option>
+                                    <option value="6">No disponible</option>
                             </select>
                         </div>
                         <input type="submit" class="btn btn-primary pull-right" value="Guardar">

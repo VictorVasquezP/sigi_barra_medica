@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Command;
 use App\Models\Room;
 use Exception;
 use Illuminate\Http\Request;
@@ -184,13 +185,22 @@ class RoomController extends VoyagerBaseController
         DB::beginTransaction();
         try {
             $room = Room::find($id);
-            $room->status_id = $request->status_id;
-            $room->update();
-            DB::commit();
-            $data =  [
-                'message'    =>"Estado actualizado",
-                'alert-type' => 'success',
-            ];
+            //obtenemos las comandas que tengan asignada la habitación y que esten en status abierta o pendiente
+            $commands = Command::where('room_id','=',$id)->whereIn('status_id',[3,4])->count();
+            if($commands > 0){
+                $data =  [
+                    'message'    =>"No se puede cambiar el estatus, la habitación esta ocupada",
+                    'alert-type' => 'error',
+                ];
+            }else if($commands == 0){
+                $room->status_id = $request->status_id;
+                $room->update();
+                DB::commit();
+                $data =  [
+                    'message'    =>"Estado actualizado",
+                    'alert-type' => 'success',
+                ];
+            }
         } catch (Exception $ex) {
             DB::rollBack();
             $data =  [
