@@ -12,4 +12,8 @@ class Command extends Model
     public function insumos(){
         return $this->hasMany(ProductCommand::class, 'command_id', 'id');
     }
+
+    public function room(){
+        return $this->hasOne(Room::class,'id','room_id');
+    }
 }
