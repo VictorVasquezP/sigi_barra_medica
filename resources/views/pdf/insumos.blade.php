@@ -1,5 +1,5 @@
 <div class="container">
-    @if (count($command->insumos) == 0)
+    @if (count($insumos) == 0)
         <div style="text-align: center"><p>No hay insumos</p></div>
     @else
     @php
@@ -50,7 +50,7 @@
                 <td style="width: 15%; font-weight: bold">Cantidad</td>
                 <td style="width: 15%; font-weight: bold">Importe</td>
             </tr>
-            @foreach ($command->insumos as $insumo)
+            @foreach ($insumos as $insumo)
                 <tr>
                     <td>{{$cont}}</td>
                     <td>{{$insumo->name}}</td>
