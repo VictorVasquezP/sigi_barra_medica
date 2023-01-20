@@ -89,6 +89,15 @@ class CommandController extends VoyagerBaseController
             $command->nurse = $request->nurse;
             $command->doctor_shift = $request->doctor_shift;
             $command->type = $request->type;
+
+            $room = Room::find($command->room_id);
+            $room->status_id = 1;
+            $room->update();
+            $command->room_id = $request->room_id;
+            $room = Room::find($request->room_id);
+            $room->status_id = 2;
+            $room->update();
+
             $command->save();
             DB::commit();
             $array = ['status' => 200, 'message' => 'Se actualizo el registro', 'data' => $command]; 
@@ -116,6 +125,9 @@ class CommandController extends VoyagerBaseController
                     break;
                 case 3:
                     $status=5;
+                    $room = Room::find($request->room_id);
+                    $room->status_id=1;
+                    $room->save();
                     break;
             }
             $command->status_id=$status;
