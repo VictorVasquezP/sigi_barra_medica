@@ -38,10 +38,8 @@
                                 <h4 id="htype">{{ command.type }}</h4>
                             </div>
                             <div class="form-group form-wizard col-md-6">
-                                <label for="first_name" class="control-label">Habitación</label>
-                                <div v-for="room in rooms">
-                                    <h4 v-if="room.id==command.room_id" id="hdoctor_shift">{{ room.name }}</h4>
-                                </div>
+                                <label for="first_name" class="control-label">Habitación Actual</label>
+                                <h4 id="hdoctor_shift">{{ command.room_name }}</h4>
                             </div>
                             <div class="form-group form-wizard col-md-6">
                                 <label for="first_name" class="control-label">Doctor en turno</label>
@@ -93,7 +91,7 @@
                                 </select>
                             </div>
                             <div class="form-group form-wizard col-md-6">
-                                <label for="first_name" class="control-label">Habitación</label>
+                                <label for="first_name" class="control-label">Habitación Nueva</label>
                                 <select  class="form-control select2-ajax" name="room_id" id="room_id" required v-model="command.room_id">
                                     <option v-for="room in rooms" :value="room.id">{{room.name}}</option>
                                 </select>
@@ -163,6 +161,7 @@ export default {
                             this.showredirect = true;
                             this.isHiddenForm = false; 
                             this.isHiddenInfo=true;
+                            this.getRooms();
                         });
                     }else{
                         Swal.fire({
