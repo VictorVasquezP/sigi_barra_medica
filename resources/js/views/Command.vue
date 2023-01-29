@@ -23,7 +23,7 @@
                                     title="máximo 150 caracteres" placeholder="Dirección" v-model="command.address">
                             </div>
                             <div class="form-group form-wizard col-md-6 text-center">
-                                <label for="start_date" class="control-label">Fecha Inicial </label>
+                                <label for="start_date" class="control-label">Fecha de Ingreso </label>
                                 <datetime type="datetime" v-model="command.date_admission" input-class="request-calendar"
                                     value-zone="America/Mexico_City" zone="America/Mexico_City"
                                     :format="{ year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit' }"
@@ -52,7 +52,7 @@
                                 <select  class="form-control select2-ajax" name="type" id="type" required v-model="command.type">
                                         <option value="Hospitalización">Hospitalización</option>
                                         <option value="Quirofano">Quirofano</option>
-                                        <option value="Apex">Apex</option>
+                                        <option value="Apex">Urgencias</option>
                                 </select>
                             </div>
                             <div class="form-group form-wizard col-md-6">
