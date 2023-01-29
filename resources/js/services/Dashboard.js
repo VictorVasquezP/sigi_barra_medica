@@ -1,7 +1,7 @@
 export class DashboardService {
 
     getCountRegisters = async() => {
-        const response = await fetch('/api/registers/count');
+        const response = await fetch('/sigi_barra_medica/public/api/registers/count');
         const data = await response.json();
         return data;
     }

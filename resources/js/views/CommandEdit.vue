@@ -190,13 +190,6 @@ export default {
                         text: "Es necesario rellenar el campo dirección",
                     });
                     return false;
-            }else if(this.command.date_admission === null){
-                Swal.fire({
-                        icon: 'error',
-                        title: 'Datos incompletos',
-                        text: "Es necesario elegir Fecha inicial",
-                    });
-                    return false;
             }else if(this.command.diagnostic === null){
                 Swal.fire({
                         icon: 'error',
@@ -214,15 +207,8 @@ export default {
             }else if(this.command.nurse === null){
                 Swal.fire({
                         icon: 'error',
-                        title: 'Fecha final incorrecta',
+                        title: 'Datos incompletos',
                         text: "Es necesario rellenar el campo enfermera",
-                    });
-                    return false;
-            }else if(this.command.doctor_shift === null){
-                Swal.fire({
-                        icon: 'error',
-                        title: 'Fecha final incorrecta',
-                        text: "Es necesario rellenar el campo doctor en turno",
                     });
                     return false;
             }

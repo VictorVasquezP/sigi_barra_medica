@@ -7,7 +7,7 @@
             </svg>
         </div>
         <div class="redirect_loading" v-show="showredirect"></div>
-        <div class="row">
+        <div class="row" v-if="(command.status_id==3) || (command.status_id < 5  && role <= 2)">
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-12">
@@ -28,7 +28,7 @@
                             <th scope="col">Nombre</th>
                             <th scope="col">Descripción</th>
                             <th scope="col">Categoria</th>
-                            <th scope="col">Precio unitario</th>
+                            <th v-if="(role == 1 || role == 2)" scope="col">Precio unitario</th>
                             <th scope="col">Cantidad</th>
                             <th scope="col">Acción</th>
                         </tr>
@@ -38,7 +38,7 @@
                             <td>{{ product.name }}</td>
                             <td>{{ product.description }}</td>
                             <td>{{ product.category }}</td>
-                            <td>
+                            <td v-if="(role == 1 || role == 2)">
                                 <div class="form-wizard">
                                     <input type="number" name="quantity" id="quantity" v-model="price"
                                         class="form-control" style="width: 100px;" />
@@ -98,7 +98,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" v-if="(role == 1 || role == 2)">
             <div class="col-md-12">
                 <div class="table-total">
                     <table class="table">
@@ -110,7 +110,7 @@
             </div>
         </div>
         <div class="text-center">
-            <button v-if="(role==1 || role == 2 ||role==3)&&(command.status_id==3)" class="btn btn-primary" @click="saveSale">Guardar</button>
+            <button v-if="((role==1 || role == 2 ||role==3)&&(command.status_id==3)) || (command.status_id < 5 && role <= 2)" class="btn btn-primary" @click="saveSale">Guardar</button>
             <button v-if="(role==1 || role == 2 ||role==3)&&(command.status_id==3)" class="btn btn-warning" @click="updateStatusCommand(1)">Cerrar cuenta</button>
             <button v-if="(role==1 || role == 2)&&(command.status_id==4)" class="btn btn-dark" @click="updateStatusCommand(2)">Abrir cuenta de nuevo</button>
             <button v-if="(role==1 || role == 2)&&(command.status_id==4)" class="btn btn-success" @click="updateStatusCommand(3)">Finalizado</button>
@@ -183,6 +183,26 @@ export default {
         this.command = JSON.parse(this.info);
         this.getInsumos(this.command.id);
         this.role = this.role_id;
+        if(this.role > 2 ){
+            this.columns = [
+                {
+                    label: 'Nombre',
+                    field: 'name',
+                },
+                {
+                    label: 'Descripción',
+                    field: 'description',
+                },
+                {
+                    label: 'Cantidad',
+                    field: 'quantity',
+                },
+                {
+                    label: 'Acciones',
+                    field: 'actions',
+                }
+            ];
+        }
     },
     methods: {
         saveSale: function () {

@@ -18,7 +18,7 @@ class PrintPdf extends AbstractAction
 
     public function getPolicy()
     {
-        return 'read';
+        return 'delete';
     }
 
     public function getAttributes()
