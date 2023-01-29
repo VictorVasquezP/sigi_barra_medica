@@ -39,7 +39,12 @@
                             <td>{{ product.name }}</td>
                             <td>{{ product.description }}</td>
                             <td>{{ product.category }}</td>
-                            <td>$ {{ product.price }}</td>
+                            <td>
+                                <div class="form-wizard">
+                                    <input type="number" name="quantity" id="quantity" v-model="price"
+                                        class="form-control" style="width: 100px;" />
+                                </div>
+                            </td>
                             <td>{{ product.amount }}</td>
                             <td>
                                 <div class="form-wizard">
@@ -141,6 +146,7 @@ export default {
             products: [],
             product: {},
             quantity: 1,
+            price: 0,
             myproducts: [],
             columns: [
                 {
@@ -252,14 +258,15 @@ export default {
                         item = {
                             name: aux.name,
                             description: aux.description,
-                            price: aux.price,
+                            price: this.price,
                             quantity: Number.parseInt(this.quantity),
-                            total: Number.parseInt(this.quantity) * Number.parseFloat(aux.price),
+                            total: Number.parseInt(this.quantity) * Number.parseFloat(this.price),
                             id: this.product_id
                         };
                         this.myproducts.push(item);
                     }
                     this.quantity = 1;
+                    this.price = 0;
                     this.product_id = undefined;
                     this.calculateTotal(this.myproducts);
                 } else {
@@ -336,6 +343,7 @@ export default {
                 this.product = {};
             } else {
                 this.product = this.products.find(x => x.id == val);
+                this.price = this.product.price;
             }
         }
     }
