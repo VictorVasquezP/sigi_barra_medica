@@ -5062,13 +5062,6 @@ vue__WEBPACK_IMPORTED_MODULE_3___default.a.component('datetime', vue_datetime__W
           text: "Es necesario rellenar el campo dirección"
         });
         return false;
-      } else if (this.command.date_admission === null) {
-        sweetalert2_dist_sweetalert2_js__WEBPACK_IMPORTED_MODULE_1___default.a.fire({
-          icon: 'error',
-          title: 'Datos incompletos',
-          text: "Es necesario elegir Fecha inicial"
-        });
-        return false;
       } else if (this.command.diagnostic === null) {
         sweetalert2_dist_sweetalert2_js__WEBPACK_IMPORTED_MODULE_1___default.a.fire({
           icon: 'error',
@@ -5086,15 +5079,8 @@ vue__WEBPACK_IMPORTED_MODULE_3___default.a.component('datetime', vue_datetime__W
       } else if (this.command.nurse === null) {
         sweetalert2_dist_sweetalert2_js__WEBPACK_IMPORTED_MODULE_1___default.a.fire({
           icon: 'error',
-          title: 'Fecha final incorrecta',
+          title: 'Datos incompletos',
           text: "Es necesario rellenar el campo enfermera"
-        });
-        return false;
-      } else if (this.command.doctor_shift === null) {
-        sweetalert2_dist_sweetalert2_js__WEBPACK_IMPORTED_MODULE_1___default.a.fire({
-          icon: 'error',
-          title: 'Fecha final incorrecta',
-          text: "Es necesario rellenar el campo doctor en turno"
         });
         return false;
       }
@@ -87277,7 +87263,7 @@ var CommandService = /*#__PURE__*/_createClass(function CommandService() {
               body: JSON.stringify(command)
             };
             _context.next = 3;
-            return fetch('/api/command/add', requestOptions);
+            return fetch('/sigi_barra_medica/public/api/command/add', requestOptions);
           case 3:
             response = _context.sent;
             _context.next = 6;
@@ -87310,7 +87296,7 @@ var CommandService = /*#__PURE__*/_createClass(function CommandService() {
               body: JSON.stringify(command)
             };
             _context2.next = 3;
-            return fetch('/api/command/edit', requestOptions);
+            return fetch('/sigi_barra_medica/public/api/command/edit', requestOptions);
           case 3:
             response = _context2.sent;
             _context2.next = 6;
@@ -87344,7 +87330,7 @@ var CommandService = /*#__PURE__*/_createClass(function CommandService() {
               body: JSON.stringify(command)
             };
             _context3.next = 4;
-            return fetch('/api/command/updateStatusCommand', requestOptions, type);
+            return fetch('/sigi_barra_medica/public/api/command/updateStatusCommand', requestOptions, type);
           case 4:
             response = _context3.sent;
             _context3.next = 7;
@@ -87381,7 +87367,7 @@ var CommandService = /*#__PURE__*/_createClass(function CommandService() {
               body: JSON.stringify(command)
             };
             _context4.next = 4;
-            return fetch('/api/save-insumos/' + id, requestOptions);
+            return fetch('/sigi_barra_medica/public/api/save-insumos/' + id, requestOptions);
           case 4:
             response = _context4.sent;
             _context4.next = 7;
@@ -87406,7 +87392,7 @@ var CommandService = /*#__PURE__*/_createClass(function CommandService() {
         while (1) switch (_context5.prev = _context5.next) {
           case 0:
             _context5.next = 2;
-            return fetch('/api/command/' + id + '/insumos');
+            return fetch('/sigi_barra_medica/public/api/command/' + id + '/insumos');
           case 2:
             response = _context5.sent;
             _context5.next = 5;
@@ -87430,7 +87416,7 @@ var CommandService = /*#__PURE__*/_createClass(function CommandService() {
       while (1) switch (_context6.prev = _context6.next) {
         case 0:
           _context6.next = 2;
-          return fetch('/api/rooms');
+          return fetch('/sigi_barra_medica/public/api/rooms');
         case 2:
           response = _context6.sent;
           _context6.next = 5;
@@ -87476,7 +87462,7 @@ var DashboardService = /*#__PURE__*/_createClass(function DashboardService() {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           _context.next = 2;
-          return fetch('/api/registers/count');
+          return fetch('/sigi_barra_medica/public/api/registers/count');
         case 2:
           response = _context.sent;
           _context.next = 5;
@@ -87533,7 +87519,7 @@ var ProductService = /*#__PURE__*/_createClass(function ProductService() {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           _context.next = 2;
-          return fetch('/api/products');
+          return fetch('/sigi_barra_medica/public/api/products');
         case 2:
           response = _context.sent;
           _context.next = 5;

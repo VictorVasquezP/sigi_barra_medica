@@ -39,6 +39,6 @@ class User extends \TCG\Voyager\Models\User
     ];
 
     public function scopeUsers($query){
-        return $query->where('users.email','<>','admin@barra.com');
+        return $query->where('users.email','<>','support@barra.com');
     }
 }
