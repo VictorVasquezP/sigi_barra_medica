@@ -5297,6 +5297,21 @@ Vue.component("v-select", vue_select__WEBPACK_IMPORTED_MODULE_3___default.a);
     this.command = JSON.parse(this.info);
     this.getInsumos(this.command.id);
     this.role = this.role_id;
+    if (this.role > 2) {
+      this.columns = [{
+        label: 'Nombre',
+        field: 'name'
+      }, {
+        label: 'Descripción',
+        field: 'description'
+      }, {
+        label: 'Cantidad',
+        field: 'quantity'
+      }, {
+        label: 'Acciones',
+        field: 'actions'
+      }];
+    }
   },
   methods: {
     saveSale: function saveSale() {
@@ -69131,169 +69146,195 @@ var render = function () {
       staticClass: "redirect_loading",
     }),
     _vm._v(" "),
-    _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-12" }, [
-        _c("div", { staticClass: "row" }, [
+    _vm.command.status_id == 3 || (_vm.command.status_id < 5 && _vm.role <= 2)
+      ? _c("div", { staticClass: "row" }, [
           _c("div", { staticClass: "col-md-12" }, [
-            _c(
-              "div",
-              {
-                staticClass: "d-flex",
-                staticStyle: { width: "90%", margin: "auto" },
-              },
-              [
+            _c("div", { staticClass: "row" }, [
+              _c("div", { staticClass: "col-md-12" }, [
                 _c(
-                  "label",
+                  "div",
                   {
-                    staticClass: "control-label",
-                    staticStyle: {
-                      "padding-right": "5px",
-                      width: "15%",
-                      "text-align": "right",
-                      margin: "auto",
-                      color: "black",
-                      "font-size": "12pt",
-                    },
-                    attrs: { for: "product_id" },
+                    staticClass: "d-flex",
+                    staticStyle: { width: "90%", margin: "auto" },
                   },
                   [
-                    _vm._v(
-                      "Buscar\n                                Insumo:\n                            "
+                    _c(
+                      "label",
+                      {
+                        staticClass: "control-label",
+                        staticStyle: {
+                          "padding-right": "5px",
+                          width: "15%",
+                          "text-align": "right",
+                          margin: "auto",
+                          color: "black",
+                          "font-size": "12pt",
+                        },
+                        attrs: { for: "product_id" },
+                      },
+                      [
+                        _vm._v(
+                          "Buscar\n                                Insumo:\n                            "
+                        ),
+                      ]
                     ),
-                  ]
+                    _vm._v(" "),
+                    _c("v-select", {
+                      staticStyle: { flex: "1", border: "1px solid #8F8F8F" },
+                      attrs: {
+                        name: "product_id",
+                        options: _vm.products,
+                        reduce: function (product) {
+                          return product.id
+                        },
+                        label: "name",
+                      },
+                      model: {
+                        value: _vm.product_id,
+                        callback: function ($$v) {
+                          _vm.product_id = $$v
+                        },
+                        expression: "product_id",
+                      },
+                    }),
+                  ],
+                  1
                 ),
-                _vm._v(" "),
-                _c("v-select", {
-                  staticStyle: { flex: "1", border: "1px solid #8F8F8F" },
-                  attrs: {
-                    name: "product_id",
-                    options: _vm.products,
-                    reduce: function (product) {
-                      return product.id
-                    },
-                    label: "name",
-                  },
-                  model: {
-                    value: _vm.product_id,
-                    callback: function ($$v) {
-                      _vm.product_id = $$v
-                    },
-                    expression: "product_id",
-                  },
-                }),
-              ],
-              1
-            ),
-          ]),
-        ]),
-        _vm._v(" "),
-        _c(
-          "table",
-          {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.product_id != undefined,
-                expression: "(product_id != undefined)",
-              },
-            ],
-            staticClass: "table",
-          },
-          [
-            _vm._m(0),
-            _vm._v(" "),
-            _c("tbody", [
-              _c("tr", [
-                _c("td", [_vm._v(_vm._s(_vm.product.name))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.product.description))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.product.category))]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("div", { staticClass: "form-wizard" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.price,
-                          expression: "price",
-                        },
-                      ],
-                      staticClass: "form-control",
-                      staticStyle: { width: "100px" },
-                      attrs: {
-                        type: "number",
-                        name: "quantity",
-                        id: "quantity",
-                      },
-                      domProps: { value: _vm.price },
-                      on: {
-                        input: function ($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.price = $event.target.value
-                        },
-                      },
-                    }),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _c("div", { staticClass: "form-wizard" }, [
-                    _c("input", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.quantity,
-                          expression: "quantity",
-                        },
-                      ],
-                      staticClass: "form-control",
-                      staticStyle: { width: "100px" },
-                      attrs: {
-                        type: "number",
-                        name: "quantity",
-                        id: "quantity",
-                      },
-                      domProps: { value: _vm.quantity },
-                      on: {
-                        input: function ($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.quantity = $event.target.value
-                        },
-                      },
-                    }),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("td", [
-                  _c(
-                    "button",
-                    {
-                      staticClass: "btn btn-success",
-                      on: { click: _vm.addProduct },
-                    },
-                    [
-                      _c("i", {
-                        staticClass: "voyager-plus",
-                        staticStyle: { width: "20px" },
-                      }),
-                    ]
-                  ),
-                ]),
               ]),
             ]),
-          ]
-        ),
-      ]),
-    ]),
+            _vm._v(" "),
+            _c(
+              "table",
+              {
+                directives: [
+                  {
+                    name: "show",
+                    rawName: "v-show",
+                    value: _vm.product_id != undefined,
+                    expression: "(product_id != undefined)",
+                  },
+                ],
+                staticClass: "table",
+              },
+              [
+                _c("thead", [
+                  _c("tr", [
+                    _c("th", { attrs: { scope: "col" } }, [_vm._v("Nombre")]),
+                    _vm._v(" "),
+                    _c("th", { attrs: { scope: "col" } }, [
+                      _vm._v("Descripción"),
+                    ]),
+                    _vm._v(" "),
+                    _c("th", { attrs: { scope: "col" } }, [
+                      _vm._v("Categoria"),
+                    ]),
+                    _vm._v(" "),
+                    _vm.role == 1 || _vm.role == 2
+                      ? _c("th", { attrs: { scope: "col" } }, [
+                          _vm._v("Precio unitario"),
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c("th", { attrs: { scope: "col" } }, [_vm._v("Cantidad")]),
+                    _vm._v(" "),
+                    _c("th", { attrs: { scope: "col" } }, [_vm._v("Acción")]),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("tbody", [
+                  _c("tr", [
+                    _c("td", [_vm._v(_vm._s(_vm.product.name))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.product.description))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(_vm.product.category))]),
+                    _vm._v(" "),
+                    _vm.role == 1 || _vm.role == 2
+                      ? _c("td", [
+                          _c("div", { staticClass: "form-wizard" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.price,
+                                  expression: "price",
+                                },
+                              ],
+                              staticClass: "form-control",
+                              staticStyle: { width: "100px" },
+                              attrs: {
+                                type: "number",
+                                name: "quantity",
+                                id: "quantity",
+                              },
+                              domProps: { value: _vm.price },
+                              on: {
+                                input: function ($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.price = $event.target.value
+                                },
+                              },
+                            }),
+                          ]),
+                        ])
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c("div", { staticClass: "form-wizard" }, [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.quantity,
+                              expression: "quantity",
+                            },
+                          ],
+                          staticClass: "form-control",
+                          staticStyle: { width: "100px" },
+                          attrs: {
+                            type: "number",
+                            name: "quantity",
+                            id: "quantity",
+                          },
+                          domProps: { value: _vm.quantity },
+                          on: {
+                            input: function ($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.quantity = $event.target.value
+                            },
+                          },
+                        }),
+                      ]),
+                    ]),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-success",
+                          on: { click: _vm.addProduct },
+                        },
+                        [
+                          _c("i", {
+                            staticClass: "voyager-plus",
+                            staticStyle: { width: "20px" },
+                          }),
+                        ]
+                      ),
+                    ]),
+                  ]),
+                ]),
+              ]
+            ),
+          ]),
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col-md-12" }, [
@@ -69301,7 +69342,7 @@ var render = function () {
           "div",
           { staticClass: "table-responsive" },
           [
-            _vm._m(1),
+            _vm._m(0),
             _vm._v(" "),
             _c("vue-good-table", {
               attrs: {
@@ -69411,21 +69452,24 @@ var render = function () {
       ]),
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-12" }, [
-        _c("div", { staticClass: "table-total" }, [
-          _c("table", { staticClass: "table" }, [
-            _c("tr", [
-              _c("td", [_vm._v("Total: $" + _vm._s(_vm.total.toFixed(2)))]),
+    _vm.role == 1 || _vm.role == 2
+      ? _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-md-12" }, [
+            _c("div", { staticClass: "table-total" }, [
+              _c("table", { staticClass: "table" }, [
+                _c("tr", [
+                  _c("td", [_vm._v("Total: $" + _vm._s(_vm.total.toFixed(2)))]),
+                ]),
+              ]),
             ]),
           ]),
-        ]),
-      ]),
-    ]),
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c("div", { staticClass: "text-center" }, [
-      (_vm.role == 1 || _vm.role == 2 || _vm.role == 3) &&
-      _vm.command.status_id == 3
+      ((_vm.role == 1 || _vm.role == 2 || _vm.role == 3) &&
+        _vm.command.status_id == 3) ||
+      (_vm.command.status_id < 5 && _vm.role <= 2)
         ? _c(
             "button",
             { staticClass: "btn btn-primary", on: { click: _vm.saveSale } },
@@ -69482,26 +69526,6 @@ var render = function () {
   ])
 }
 var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Nombre")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Descripción")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Categoria")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Precio unitario")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Cantidad")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Acción")]),
-      ]),
-    ])
-  },
   function () {
     var _vm = this
     var _h = _vm.$createElement
