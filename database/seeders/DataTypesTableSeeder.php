@@ -125,7 +125,7 @@ class DataTypesTableSeeder extends Seeder
                 'policy_name' => NULL,
                 'server_side' => 0,
                 'slug' => 'commands',
-                'updated_at' => '2023-01-19 18:32:24',
+                'updated_at' => '2023-01-29 07:52:04',
             ),
         ));
         

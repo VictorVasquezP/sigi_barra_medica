@@ -3,11 +3,7 @@
     <div class="row text-center">
       <div class="col-md-4">
         <DashboardCard title="Registros" :url="url + '/admin/commands'"
-          icon="voyager-file-text" :info="totalRequestCareer" textSmall="Cortes de caja" color="rgb(7, 41, 77)" />
-      </div>
-      <div class="col-md-4">
-        <DashboardCard title="Habitaciones" :url="url + '/admin/rooms'"
-          icon="voyager-file-text" :info="totalRequestPostgraduate" textSmall="Habitaciones" color="rgb(7, 41, 77)" />
+          icon="voyager-file-text" :info="'Ir'" textSmall="" color="rgb(7, 41, 77)" />
       </div>
     </div>
   </div>
@@ -23,9 +19,7 @@ export default {
   },
   data: function () {
     return {
-      serviceDashboard: {},
-      totalRequestCareer: 0,
-      totalRequestPostgraduate: 0
+      serviceDashboard: {}
     }
   },
   mounted: function () {
@@ -34,20 +28,6 @@ export default {
     // this.getCountRequestPostgraduate();
   },
   methods: {
-    getCountRequestCareerChoice: function () {
-      this.serviceDashboard.getCountRequestCareerChoice().then(response => {
-        if (response.status === 200) {
-          this.totalRequestCareer = response.data;
-        }
-      });
-    },
-    getCountRequestPostgraduate: function () {
-      this.serviceDashboard.getCountRequestPostgraduate().then(response => {
-        if (response.status === 200) {
-          this.totalRequestPostgraduate = response.data;
-        }
-      });
-    }
   }
 }
 </script>

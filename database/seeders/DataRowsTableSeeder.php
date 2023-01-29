@@ -778,7 +778,7 @@ class DataRowsTableSeeder extends Seeder
                 'data_type_id' => 6,
                 'delete' => 1,
                 'details' => '{"model":"App\\\\Models\\\\Status","table":"statuses","type":"belongsTo","column":"status_id","key":"id","label":"name","pivot_table":"commands","pivot":"0","taggable":"0"}',
-                'display_name' => 'statuses',
+                'display_name' => 'Estatus',
                 'edit' => 1,
                 'field' => 'command_belongsto_status_relationship',
                 'id' => 49,
