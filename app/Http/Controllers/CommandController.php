@@ -127,10 +127,11 @@ class CommandController extends VoyagerBaseController
                     $room = Room::find($request->room_id);
                     $room->status_id=1;
                     $room->save();
+                    $command->date_agress = date_create()->format('Y-m-d H:i:s');
                     break;
             }
             $command->status_id=$status;
-            $command->save();
+            $command->update();
             DB::commit();
             $array = ['status' => 200, 'message' => 'Se actualizo el estatus del registro', 'data' => $command]; 
         } catch (Exception $ex) {
