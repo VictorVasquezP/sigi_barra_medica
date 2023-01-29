@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Command;
-use App\Models\Product;
 use App\Models\ProductCommand;
 use App\Models\Room;
 use Illuminate\Http\Request;
@@ -201,13 +200,11 @@ class CommandController extends VoyagerBaseController
             $command = Command::find($id);
             $insumos = $command->insumos;
             /** Bucle para agregar o actualizar los datos del insumo en el registro */
-            $diferencia = 0;
             foreach ($request->products as $product) {
                 if ($insumos->contains('product_id', '=', $product["id"])) { // si ya esta registrado solo actualizamos
                     $insumo = ProductCommand::where('command_id', '=', $id)
                         ->where('product_id', '=', $product["id"])
                         ->first();
-                    $diferencia = $product["quantity"] - $insumo->quantity;
                     $insumo->quantity = $product["quantity"];
                     $insumo->total = $product["total"];
                     $insumo->update();
@@ -219,18 +216,6 @@ class CommandController extends VoyagerBaseController
                     $insumo->quantity = $product["quantity"];
                     $insumo->total = $product["total"];
                     $insumo->save();
-                }
-                /**
-                 * Depende la diferencia se regresa o se quita más stock
-                 */
-                if ($diferencia > 0) { //quitamos stock porque agregamos más cantidad de insumo
-                    $prod = Product::find($product["id"]);
-                    $prod->amount -= $diferencia;
-                    $prod->update();
-                } else if ($diferencia < 0) { //devolvemos al stock porque quitamos cantidad de insumo
-                    $prod = Product::find($product["id"]);
-                    $prod->amount += $diferencia * -1;
-                    $prod->update();
                 }
             }
 
@@ -244,10 +229,6 @@ class CommandController extends VoyagerBaseController
                     }
                 }
                 if (!$bandera) {
-                    $prod = Product::find($insumo->product_id);
-                    $prod->amount += $insumo->quantity;
-                    $prod->update();
-
                     $insumo->delete();
                 }
             }

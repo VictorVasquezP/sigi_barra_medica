@@ -29,7 +29,6 @@
                             <th scope="col">Descripción</th>
                             <th scope="col">Categoria</th>
                             <th scope="col">Precio unitario</th>
-                            <th scope="col">Disponibilidad</th>
                             <th scope="col">Cantidad</th>
                             <th scope="col">Acción</th>
                         </tr>
@@ -45,7 +44,6 @@
                                         class="form-control" style="width: 100px;" />
                                 </div>
                             </td>
-                            <td>{{ product.amount }}</td>
                             <td>
                                 <div class="form-wizard">
                                     <input type="number" name="quantity" id="quantity" v-model="quantity"
@@ -80,7 +78,7 @@
     ofLabel: 'de',
     rowsPerPageLabel: 'Productos por página'
 }">
-                        <template slot="table-row" slot-scope="props">
+                        <template slot="table-row" slot-scope="props"  v-if="command.status_id==3">
                             <span v-if="props.column.field == 'actions'">
                                 <button class="btn-product-list btn-increment" @click="incrementProduct(props.row.id)">
                                     +
@@ -112,10 +110,10 @@
             </div>
         </div>
         <div class="text-center">
-            <button v-if="(role==1||role==3)&&(command.status_id==3)" class="btn btn-primary" @click="saveSale">Guardar</button>
-            <button v-if="(role==1||role==3)&&(command.status_id==3)" class="btn btn-warning" @click="updateStatusCommand(1)">Cerrar cuenta</button>
-            <button v-if="(role==1)&&(command.status_id==4)" class="btn btn-dark" @click="updateStatusCommand(2)">Abrir cuenta de nuevo</button>
-            <button v-if="(role==1)&&(command.status_id==4)" class="btn btn-success" @click="updateStatusCommand(3)">Finalizado</button>
+            <button v-if="(role==1 || role == 2 ||role==3)&&(command.status_id==3)" class="btn btn-primary" @click="saveSale">Guardar</button>
+            <button v-if="(role==1 || role == 2 ||role==3)&&(command.status_id==3)" class="btn btn-warning" @click="updateStatusCommand(1)">Cerrar cuenta</button>
+            <button v-if="(role==1 || role == 2)&&(command.status_id==4)" class="btn btn-dark" @click="updateStatusCommand(2)">Abrir cuenta de nuevo</button>
+            <button v-if="(role==1 || role == 2)&&(command.status_id==4)" class="btn btn-success" @click="updateStatusCommand(3)">Finalizado</button>
         </div>
     </div>
 </template>
@@ -248,8 +246,6 @@ export default {
         addProduct() {
             if (Number.parseInt(this.quantity) > 0) {
                 var aux = this.products.find(x => x.id == this.product_id);
-                if (aux.amount >= this.quantity) {
-                    aux.amount -= this.quantity;
                     var item = this.myproducts.find(x => x.id == this.product_id);
                     if (item != undefined) {//si esta registrado y solo aumentamos la cantidad
                         item.quantity = Number.parseInt(item.quantity) + Number.parseInt(this.quantity);
@@ -269,13 +265,6 @@ export default {
                     this.price = 0;
                     this.product_id = undefined;
                     this.calculateTotal(this.myproducts);
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'No hay existencias suficiente para la cantidad solicitada',
-                    });
-                }
             } else {
                 Swal.fire({
                     icon: 'warning',
@@ -285,16 +274,12 @@ export default {
             }
         },
         incrementProduct: function (id) {
-            var aux = this.products.find(x => x.id == id);
-            aux.amount = Number.parseInt(aux.amount) - 1;
             var item = this.myproducts.find(x => x.id == id);
             item.quantity = Number.parseInt(item.quantity) + 1;
             item.total = Number.parseInt(item.quantity) * Number.parseFloat(item.price);
             this.calculateTotal(this.myproducts);
         },
         reduceProduct: function (id) {
-            var aux = this.products.find(x => x.id == id);
-            aux.amount = Number.parseInt(aux.amount) + 1;
             for (var i = 0; i < this.myproducts.length; i++) {
                 if (this.myproducts[i].id === id) {
                     this.myproducts[i].quantity = Number.parseInt(this.myproducts[i].quantity) - 1;
@@ -320,7 +305,6 @@ export default {
                 if (result.isConfirmed) {
                     for (var i = 0; i < this.myproducts.length; i++) {
                         if (this.myproducts[i].id === id) {
-                            this.products.find(product => product.id === id).amount += this.myproducts[i].quantity;
                             this.myproducts.splice(i, 1);
                         }
                     }
