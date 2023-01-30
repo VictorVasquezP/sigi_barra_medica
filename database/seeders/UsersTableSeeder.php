@@ -67,7 +67,7 @@ class UsersTableSeeder extends Seeder
             3 => 
             array (
                 'id' => 4,
-                'role_id' => 4,
+                'role_id' => 5,
                 'name' => 'Urgencias',
                 'email' => 'urgencias@barra.com',
                 'avatar' => 'users/default.png',

@@ -22,14 +22,14 @@ class TypeRoomsTableSeeder extends Seeder
             0 => 
             array (
                 'id' => 1,
-                'name' => 'Quirófano',
+                'name' => 'Quirofano',
                 'created_at' => '2023-01-29 22:38:25',
                 'updated_at' => '2023-01-30 04:06:44',
             ),
             1 => 
             array (
                 'id' => 2,
-                'name' => 'Hospitalización',
+                'name' => 'Hospitalizacion',
                 'created_at' => '2023-01-30 04:07:04',
                 'updated_at' => '2023-01-30 04:07:04',
             ),
