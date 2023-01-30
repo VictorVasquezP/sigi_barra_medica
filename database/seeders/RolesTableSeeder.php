@@ -38,9 +38,25 @@ class RolesTableSeeder extends Seeder
             2 => 
             array (
                 'created_at' => '2023-01-19 19:17:14',
-                'display_name' => 'General',
+                'display_name' => 'Hospitalización',
                 'id' => 3,
-                'name' => 'general',
+                'name' => 'hospital',
+                'updated_at' => '2023-01-19 19:17:14',
+            ),
+            3 => 
+            array (
+                'created_at' => '2023-01-19 19:17:14',
+                'display_name' => 'Quirófano',
+                'id' => 4,
+                'name' => 'quirofano',
+                'updated_at' => '2023-01-19 19:17:14',
+            ),
+            4 => 
+            array (
+                'created_at' => '2023-01-19 19:17:14',
+                'display_name' => 'Urgencias',
+                'id' => 5,
+                'name' => 'urgencias',
                 'updated_at' => '2023-01-19 19:17:14',
             ),
         ));
