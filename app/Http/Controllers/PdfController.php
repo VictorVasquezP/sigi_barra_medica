@@ -20,7 +20,7 @@ class PdfController extends Controller
 
         $mpdf = new PdfFormat();
         $mpdf->charset_in = 'utf-8';
-        $mpdf->title = 'EL PALENQUE';
+        $mpdf->title = 'GASTOS MEDICOS';
         $mpdf->description = 'DEPOT';
         $data = [
             'command' => $command,
