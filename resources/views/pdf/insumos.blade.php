@@ -44,8 +44,8 @@
         <table class="data" border="1">
             <tr class="tr-head">
                 <td style="width: 10%; font-weight: bold">#</td>
-                <td style="width: 25%; font-weight: bold">Nombre</td>
-                <td style="width: 20%; font-weight: bold">Descripción</td>
+                <td style="width: 45%; font-weight: bold">Nombre</td>
+                {{-- <td style="width: 20%; font-weight: bold">Descripción</td> --}}
                 <td style="width: 15%; font-weight: bold">P. Unitario</td>
                 <td style="width: 15%; font-weight: bold">Cantidad</td>
                 <td style="width: 15%; font-weight: bold">Importe</td>
@@ -54,7 +54,7 @@
                 <tr>
                     <td>{{$cont}}</td>
                     <td>{{$insumo->name}}</td>
-                    <td>{{$insumo->description}}</td>
+                    {{-- <td>{{$insumo->description}}</td> --}}
                     <td>$ {{number_format($insumo->price, 2, '.', ',')}}</td>
                     <td>{{$insumo->quantity}}</td>
                     <td>$ {{number_format($insumo->total, 2, '.', ',')}}</td>
@@ -65,7 +65,7 @@
                 @endphp
             @endforeach
             <tr>
-                <td colspan="5">Total: </td>
+                <td colspan="4">Total: </td>
                 <td>$ {{number_format($total, 2, '.', ',')}}</td>
             </tr>
         </table>

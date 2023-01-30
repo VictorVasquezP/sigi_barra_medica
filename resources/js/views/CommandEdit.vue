@@ -47,7 +47,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel-footer">
+                    <div class="panel-footer" v-if="(command.status_id==3) || (command.status_id < 5 && role_id <= 2)">
                         <button class="btn btn-primary save" v-on:click="isHiddenInfo = false; isHiddenForm=true">Editar</button>
                     </div>
                 </div>
@@ -118,7 +118,7 @@ import 'vue-datetime/dist/vue-datetime.css'
 Vue.component('datetime', Datetime);
 
 export default {
-    props: ['url','info', 'date'],
+    props: ['url','info', 'date', 'role_id'],
     data: function () {
         return {
             serviceCommand: {},

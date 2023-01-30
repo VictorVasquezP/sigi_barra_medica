@@ -115,8 +115,8 @@
             </div>
         </div>
         <div class="text-center">
-            <button v-if="((role==1 || role == 2 ||role==3)&&(command.status_id==3)) || (command.status_id < 5 && role <= 2)" class="btn btn-primary" @click="saveSale">Guardar</button>
-            <button v-if="(role==1 || role == 2 ||role==3)&&(command.status_id==3)" class="btn btn-warning" @click="updateStatusCommand(1)">Cerrar cuenta</button>
+            <button v-if="(command.status_id==3) || (command.status_id < 5 && role <= 2)" class="btn btn-primary" @click="saveSale">Guardar</button>
+            <button v-if="(command.status_id==3)" class="btn btn-warning" @click="updateStatusCommand(1)">Cerrar cuenta</button>
             <button v-if="(role==1 || role == 2)&&(command.status_id==4)" class="btn btn-dark" @click="updateStatusCommand(2)">Abrir cuenta de nuevo</button>
             <button v-if="(role==1 || role == 2)&&(command.status_id==4)" class="btn btn-success" @click="updateStatusCommand(3)">Finalizado</button>
         </div>
