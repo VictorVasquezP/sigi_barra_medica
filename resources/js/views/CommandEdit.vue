@@ -47,7 +47,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel-footer">
+                    <div class="panel-footer" v-if="(command.status_id==3) || (command.status_id < 5 && role_id <= 2)">
                         <button class="btn btn-primary save" v-on:click="isHiddenInfo = false; isHiddenForm=true">Editar</button>
                     </div>
                 </div>
@@ -81,14 +81,6 @@
                                 <label for="first_name" class="control-label">Nombre Enfermer@</label>
                                 <input type="text" id="nurse" name="nurse" class="form-control" maxlength="80"
                                     minlength="1" placeholder="Enfermer@" required v-model="command.nurse">
-                            </div>
-                            <div class="form-group form-wizard col-md-6">
-                                <label for="first_name" class="control-label">Tipo</label>
-                                <select  class="form-control select2-ajax" name="type" id="type" required v-model="command.type">
-                                        <option value="Hospitalización">Hospitalización</option>
-                                        <option value="Quirofano">Quirofano</option>
-                                        <option value="Apex">Apex</option>
-                                </select>
                             </div>
                             <div class="form-group form-wizard col-md-6">
                                 <label for="first_name" class="control-label">Habitación Nueva</label>
@@ -126,7 +118,7 @@ import 'vue-datetime/dist/vue-datetime.css'
 Vue.component('datetime', Datetime);
 
 export default {
-    props: ['url','info', 'date'],
+    props: ['url','info', 'date', 'role_id'],
     data: function () {
         return {
             serviceCommand: {},
