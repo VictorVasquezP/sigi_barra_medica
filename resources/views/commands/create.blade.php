@@ -21,7 +21,7 @@
 
 @section('content')
     <div id="app">
-        <command-view url="{{ url('/') }}" date="{{date('Y-m-d')}}" ></command-view>
+        <command-view url="{{ url('/') }}" date="{{date('Y-m-d')}}" display_name="{{$display_name}}"></command-view>
     </div>
 @stop
 
