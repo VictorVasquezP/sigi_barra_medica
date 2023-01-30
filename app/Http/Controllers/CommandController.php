@@ -117,15 +117,15 @@ class CommandController extends VoyagerBaseController
             switch($request->type){
                 case 1:
                     $status=4;
+                    $room = Room::find($request->room_id);
+                    $room->status_id=1;
+                    $room->save();
                     break;
                 case 2:
                     $status=3;
                     break;
                 case 3:
                     $status=5;
-                    $room = Room::find($request->room_id);
-                    $room->status_id=1;
-                    $room->save();
                     $command->date_agress = date_create()->format('Y-m-d H:i:s');
                     break;
             }
