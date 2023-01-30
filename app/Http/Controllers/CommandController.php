@@ -117,15 +117,15 @@ class CommandController extends VoyagerBaseController
             switch($request->type){
                 case 1:
                     $status=4;
+                    $room = Room::find($request->room_id);
+                    $room->status_id=1;
+                    $room->save();
                     break;
                 case 2:
                     $status=3;
                     break;
                 case 3:
                     $status=5;
-                    $room = Room::find($request->room_id);
-                    $room->status_id=1;
-                    $room->save();
                     $command->date_agress = date_create()->format('Y-m-d H:i:s');
                     break;
             }
@@ -201,9 +201,9 @@ class CommandController extends VoyagerBaseController
             $insumos = $command->insumos;
             /** Bucle para agregar o actualizar los datos del insumo en el registro */
             foreach ($request->products as $product) {
-                if ($insumos->contains('product_id', '=', $product["id"])) { // si ya esta registrado solo actualizamos
+                if ($insumos->contains('name', '=', $product["name"])) { // si ya esta registrado solo actualizamos
                     $insumo = ProductCommand::where('command_id', '=', $id)
-                        ->where('product_id', '=', $product["id"])
+                        ->where('name', '=', $product["name"])
                         ->first();
                     $insumo->quantity = $product["quantity"];
                     $insumo->total = $product["total"];
@@ -211,10 +211,11 @@ class CommandController extends VoyagerBaseController
                 } else {
                     $insumo = new ProductCommand();
                     $insumo->command_id = $id;
-                    $insumo->product_id = $product["id"];
                     $insumo->price = $product["price"];
                     $insumo->quantity = $product["quantity"];
                     $insumo->total = $product["total"];
+                    $insumo->name = $product["name"];
+                    $insumo->description = $product["description"];
                     $insumo->save();
                 }
             }
@@ -223,7 +224,7 @@ class CommandController extends VoyagerBaseController
             foreach ($insumos as $insumo) {
                 $bandera = false;
                 foreach ($request->products as $product) {
-                    if ($product["id"] == $insumo->product_id) { //Si está
+                    if ($product["name"] == $insumo->name) { //Si está
                         $bandera = true;
                         break;
                     }
@@ -246,10 +247,8 @@ class CommandController extends VoyagerBaseController
     {
         $array = [];
         try {
-            $insumos = ProductCommand::join('products', 'products.id', '=', 'product_commands.product_id')
-                ->select('product_commands.product_id as id', 'product_commands.price', 'product_commands.quantity', 'product_commands.total', 'products.name', 'products.description')
-                ->where('product_commands.command_id', '=', $id)
-                ->get();
+            $command = Command::find($id);
+            $insumos = $command->insumos;
             if (count($insumos) > 0) {
                 $array = ['status' => 200, 'message' => 'Se encontraron resultados', 'data' => $insumos];
                 return $array;
