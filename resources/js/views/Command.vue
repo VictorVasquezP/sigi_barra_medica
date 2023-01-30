@@ -49,11 +49,8 @@
                             </div>
                             <div class="form-group form-wizard col-md-6">
                                 <label for="first_name" class="control-label">Tipo</label>
-                                <select  class="form-control select2-ajax" name="type" id="type" required v-model="command.type">
-                                        <option value="Hospitalización">Hospitalización</option>
-                                        <option value="Quirofano">Quirofano</option>
-                                        <option value="Apex">Urgencias</option>
-                                </select>
+                                <input disabled type="text" id="type" name="type" class="form-control" maxlength="80"
+                                    minlength="1" placeholder="Enfermer@" required v-model="dn">
                             </div>
                             <div class="form-group form-wizard col-md-6">
                                 <label for="first_name" class="control-label">Habitación</label>
@@ -89,12 +86,13 @@ import 'vue-datetime/dist/vue-datetime.css'
 Vue.component('datetime', Datetime);
 
 export default {
-    props: ['url', 'date'],
+    props: ['url', 'date','display_name'],
     data: function () {
         return {
             serviceCommand: {},
             showspinner: false,
             showredirect: false,
+            dn:undefined,
             command: {},
             rooms: []
         }
@@ -102,9 +100,11 @@ export default {
     mounted: function () {
         this.serviceCommand = factoryApi('command');
         this.getRooms();
+        this.dn=this.display_name;
     },
     methods: {
         saveCommand: function () {
+            this.command.type=this.dn;
             if (this.validateForm()) {
                 this.showspinner = true;
                 var token = $('meta[name="csrf-token"]').attr('content');
@@ -131,7 +131,7 @@ export default {
             }
         },
         validateForm() {
-            if(this.command.patient == null){
+            if(this.command.patient == undefined){
                 Swal.fire({
                     icon: 'error',
                     title: 'Datos incompletos',
@@ -139,46 +139,39 @@ export default {
                 });
                 return false;
                 
-            }else if(this.command.address === null){
+            }else if(this.command.address === undefined){
                 Swal.fire({
                         icon: 'error',
                         title: 'Datos incompletos',
                         text: "Es necesario rellenar el campo dirección",
                     });
                     return false;
-            }else if(this.command.date_admission === null){
+            }else if(this.command.date_admission === undefined){
                 Swal.fire({
                         icon: 'error',
                         title: 'Datos incompletos',
                         text: "Es necesario elegir Fecha inicial",
                     });
                     return false;
-            }else if(this.command.diagnostic === null){
+            }else if(this.command.diagnostic === undefined){
                 Swal.fire({
                         icon: 'error',
                         title: 'Datos incompletos',
                         text: "Es necesario rellenar el campo diagnostico",
                     });
                     return false;
-            }else if(this.command.doctor === null){
+            }else if(this.command.doctor === undefined){
                 Swal.fire({
                         icon: 'error',
                         title: 'Datos incompletos',
                         text: "Es necesario rellenar el campo doctor",
                     });
                     return false;
-            }else if(this.command.nurse === null){
+            }else if(this.command.nurse === undefined){
                 Swal.fire({
                         icon: 'error',
                         title: 'Fecha final incorrecta',
                         text: "Es necesario rellenar el campo enfermera",
-                    });
-                    return false;
-            }else if(this.command.doctor_shift === null){
-                Swal.fire({
-                        icon: 'error',
-                        title: 'Fecha final incorrecta',
-                        text: "Es necesario rellenar el campo doctor en turno",
                     });
                     return false;
             }

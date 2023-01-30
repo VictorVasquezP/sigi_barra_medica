@@ -83,14 +83,6 @@
                                     minlength="1" placeholder="Enfermer@" required v-model="command.nurse">
                             </div>
                             <div class="form-group form-wizard col-md-6">
-                                <label for="first_name" class="control-label">Tipo</label>
-                                <select  class="form-control select2-ajax" name="type" id="type" required v-model="command.type">
-                                        <option value="Hospitalización">Hospitalización</option>
-                                        <option value="Quirofano">Quirofano</option>
-                                        <option value="Apex">Apex</option>
-                                </select>
-                            </div>
-                            <div class="form-group form-wizard col-md-6">
                                 <label for="first_name" class="control-label">Habitación Nueva</label>
                                 <select  class="form-control select2-ajax" name="room_id" id="room_id" required v-model="command.room_id">
                                     <option v-for="room in rooms" :value="room.id">{{room.name}}</option>

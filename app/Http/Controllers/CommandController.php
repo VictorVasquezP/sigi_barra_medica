@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Command;
 use App\Models\ProductCommand;
+use App\Models\Role;
 use App\Models\Room;
 use Illuminate\Http\Request;
 use Exception;
@@ -42,7 +43,11 @@ class CommandController extends VoyagerBaseController
 
         $view = 'commands.create';
 
-        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable'));
+        $role_id = Auth::user()->role_id;
+        $role = Role::find($role_id);
+        $display_name=$role->display_name;
+
+        return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable','display_name'));
     }
 
     public function storeCommand(Request $request)
@@ -87,7 +92,6 @@ class CommandController extends VoyagerBaseController
             $command->doctor = $request->doctor;
             $command->nurse = $request->nurse;
             $command->doctor_shift = $request->doctor_shift;
-            $command->type = $request->type;
             $room = Room::find($command->room_id);
             $room->status_id = 1;
             $room->update();
