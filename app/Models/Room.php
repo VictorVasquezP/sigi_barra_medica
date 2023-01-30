@@ -13,7 +13,7 @@ class Room extends Model
     public function scopeRooms($query){
         $role_id = Auth::user()->role_id;
         $role = Role::find($role_id);
-        $type_room = TypeRoom::where('name','=',$role->display_name)->first();
+        $type_room = TypeRoom::all()->where('name','=',$role->display_name)->first();
         return $query->where('status_id','=','1')->where('type','=',$type_room->id);
     }
 }

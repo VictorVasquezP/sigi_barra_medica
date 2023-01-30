@@ -38,7 +38,7 @@ class RolesTableSeeder extends Seeder
             2 => 
             array (
                 'created_at' => '2023-01-19 19:17:14',
-                'display_name' => 'Hospitalización',
+                'display_name' => 'Hospitalizacion',
                 'id' => 3,
                 'name' => 'hospital',
                 'updated_at' => '2023-01-19 19:17:14',
@@ -46,7 +46,7 @@ class RolesTableSeeder extends Seeder
             3 => 
             array (
                 'created_at' => '2023-01-19 19:17:14',
-                'display_name' => 'Quirófano',
+                'display_name' => 'Quirofano',
                 'id' => 4,
                 'name' => 'quirofano',
                 'updated_at' => '2023-01-19 19:17:14',
