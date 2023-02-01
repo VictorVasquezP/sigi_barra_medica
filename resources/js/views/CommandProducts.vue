@@ -400,7 +400,11 @@ export default {
             this.total = aux;
         },
         getLastId(){
-            return this.myproducts[this.myproducts.length -1].id  + 1;
+            if(this.myproducts.length == 0){
+                return 1;
+            }else{
+                return this.myproducts[this.myproducts.length -1].id  + 1;
+            }
         }
     },
     watch: {

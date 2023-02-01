@@ -5499,7 +5499,11 @@ Vue.component("v-select", vue_select__WEBPACK_IMPORTED_MODULE_3___default.a);
       this.total = aux;
     },
     getLastId: function getLastId() {
-      return this.myproducts[this.myproducts.length - 1].id + 1;
+      if (this.myproducts.length == 0) {
+        return 1;
+      } else {
+        return this.myproducts[this.myproducts.length - 1].id + 1;
+      }
     }
   },
   watch: {
