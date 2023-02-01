@@ -204,15 +204,7 @@ class CommandController extends VoyagerBaseController
             $command = Command::find($id);
             $insumos = $command->insumos;
             /** Bucle para agregar o actualizar los datos del insumo en el registro */
-            foreach ($request->products as $product) {
-                if ($insumos->contains('name', '=', $product["name"])) { // si ya esta registrado solo actualizamos
-                    $insumo = ProductCommand::where('command_id', '=', $id)
-                        ->where('name', '=', $product["name"])
-                        ->first();
-                    $insumo->quantity = $product["quantity"];
-                    $insumo->total = $product["total"];
-                    $insumo->update();
-                } else {
+            foreach ($request->newproducts as $product) {
                     $insumo = new ProductCommand();
                     $insumo->command_id = $id;
                     $insumo->price = $product["price"];
@@ -221,14 +213,13 @@ class CommandController extends VoyagerBaseController
                     $insumo->name = $product["name"];
                     $insumo->description = $product["description"];
                     $insumo->save();
-                }
             }
 
             /** Bucle para quitar los insumos que eliminaron */
             foreach ($insumos as $insumo) {
                 $bandera = false;
                 foreach ($request->products as $product) {
-                    if ($product["name"] == $insumo->name) { //Si está
+                    if ($product["id"] == $insumo->id) { //Si está
                         $bandera = true;
                         break;
                     }

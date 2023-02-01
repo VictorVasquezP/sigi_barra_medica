@@ -44,9 +44,10 @@ export class CommandService {
         return data;
     }
 
-    saveInsumos = async(insumos, token, id) => {
+    saveInsumos = async(insumos, newinsumos, token, id) => {
         let command = {
-            products: insumos
+            products: insumos,
+            newproducts: newinsumos
         }
         const requestOptions = {
             method: 'PUT',

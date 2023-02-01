@@ -7,14 +7,14 @@
             </svg>
         </div>
         <div class="redirect_loading" v-show="showredirect"></div>
-        <div class="row" v-if="(command.status_id==3) || (command.status_id < 5  && role <= 2)">
+        <div class="row" v-if="(command.status_id == 3) || (command.status_id < 5 && role <= 2)">
             <div class="col-md-12">
                 <div class="row">
                     <div class="col-md-10">
                         <div class="d-flex" style="width: 90%; margin: auto;">
                             <label for="product_id" class="control-label"
                                 style="padding-right: 5px;width: 15%;text-align: right;margin: auto; color: black; font-size: 12pt;">Buscar
-                                Insumo:
+                                Consumo:
                             </label>
                             <v-select name="product_id" class="" style="flex: 1; border: 1px solid #8F8F8F;"
                                 :options="products" :reduce="product => product.id" label="name"
@@ -22,7 +22,8 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                        <button type="button" class="btn btn-primary" data-toggle="modal"
+                            data-target="#exampleModalCenter">
                             Agregar consumo
                         </button>
                     </div>
@@ -45,8 +46,8 @@
                             <td>{{ product.category }}</td>
                             <td v-if="(role == 1 || role == 2)">
                                 <div class="form-wizard">
-                                    <input type="number" name="quantity" id="quantity" v-model="price"
-                                        class="form-control" style="width: 100px;" />
+                                    <input type="number" name="price" id="price" v-model="price" class="form-control"
+                                        style="width: 100px;" />
                                 </div>
                             </td>
                             <td>
@@ -68,7 +69,7 @@
             <div class="col-md-12">
                 <div class="table-responsive">
                     <div class="text-center">
-                        <h3 style="margin: 0px 0px 15px 0px;">LISTA DE INSUMOS</h3>
+                        <h3 style="margin: 0px 0px 15px 0px;">LISTA DE CONSUMO</h3>
                     </div>
                     <vue-good-table styleClass="vgt-table condensed" :columns="columns" :rows="myproducts"
                         :search-options="{
@@ -83,15 +84,9 @@
     ofLabel: 'de',
     rowsPerPageLabel: 'Productos por página'
 }">
-                        <template slot="table-row" slot-scope="props"  v-if="command.status_id==3">
+                        <template slot="table-row" slot-scope="props" v-if="command.status_id == 3">
                             <span v-if="props.column.field == 'actions'">
-                                <button class="btn-product-list btn-increment" @click="incrementProduct(props.row.name)">
-                                    +
-                                </button>
-                                <button class="btn-product-list btn-reduce" @click="reduceProduct(props.row.name)">
-                                    -
-                                </button>
-                                <button class="btn-product-list btn-remove" @click="removeProduct(props.row.name)">
+                                <button class="btn-product-list btn-remove" @click="removeProduct(props.row.id)">
                                     x
                                 </button>
                             </span>
@@ -115,42 +110,51 @@
             </div>
         </div>
         <div class="text-center">
-            <button v-if="(command.status_id==3) || (command.status_id < 5 && role <= 2)" class="btn btn-primary" @click="saveSale">Guardar</button>
-            <button v-if="(command.status_id==3)" class="btn btn-warning" @click="updateStatusCommand(1)">Cerrar cuenta</button>
-            <button v-if="(role==1 || role == 2)&&(command.status_id==4)" class="btn btn-dark" @click="updateStatusCommand(2)">Abrir cuenta de nuevo</button>
-            <button v-if="(role==1 || role == 2)&&(command.status_id==4)" class="btn btn-success" @click="updateStatusCommand(3)">Finalizado</button>
+            <button v-if="(command.status_id == 3) || (command.status_id < 5 && role <= 2)" class="btn btn-primary"
+                @click="saveSale">Guardar</button>
+            <button v-if="(command.status_id == 3)" class="btn btn-warning" @click="updateStatusCommand(1)">Cerrar
+                cuenta</button>
+            <button v-if="(role == 1 || role == 2) && (command.status_id == 4)" class="btn btn-dark"
+                @click="updateStatusCommand(2)">Abrir cuenta de nuevo</button>
+            <button v-if="(role == 1 || role == 2) && (command.status_id == 4)" class="btn btn-success"
+                @click="updateStatusCommand(3)">Finalizado</button>
         </div>
         <!-- Modal -->
-        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Agregar consumo</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="form-group form-wizard col-md-6">
-                            <input type="text" name="out_name" id="out_name" v-model="out_name" class="form-control" placeholder="Nombre">
-                        </div>
-                        <div class="form-group form-wizard col-md-3">
-                            <input type="number" name="out_price" id="out_price" v-model="out_price" class="form-control" placeholder="Precio">
-                        </div>
-                        <div class="form-group form-wizard col-md-3">
-                            <input type="number" name="out_quantity" id="out_quantity" v-model="out_quantity" class="form-control" placeholder="Cantidad">
-                        </div>
-                        <div class="form-group form-wizard col-md-12">
-                            <span class="badge badge-secondary">Opcional</span>
-                            <input type="text" name="out_des" id="out_des" v-model="out_des" class="form-control" placeholder="Descripción">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Agregar consumo</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="form-group form-wizard col-md-6">
+                                <input type="text" name="out_name" id="out_name" v-model="out_name" class="form-control"
+                                    placeholder="Nombre">
+                            </div>
+                            <div class="form-group form-wizard col-md-3">
+                                <input type="number" name="out_price" id="out_price" v-model="out_price"
+                                    class="form-control" placeholder="Precio">
+                            </div>
+                            <div class="form-group form-wizard col-md-3">
+                                <input type="number" name="out_quantity" id="out_quantity" v-model="out_quantity"
+                                    class="form-control" placeholder="Cantidad">
+                            </div>
+                            <div class="form-group form-wizard col-md-12">
+                                <span class="badge badge-secondary">Opcional</span>
+                                <input type="text" name="out_des" id="out_des" v-model="out_des" class="form-control"
+                                    placeholder="Descripción">
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" @click="addProductOut">Guardar</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" @click="addProductOut">Guardar</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -169,7 +173,7 @@ Vue.use(VueGoodTablePlugin);
 Vue.component("v-select", vSelect);
 
 export default {
-    props: ['url', 'info', 'date','role_id'],
+    props: ['url', 'info', 'date', 'role_id'],
     components: {},
     data: function () {
         return {
@@ -178,7 +182,7 @@ export default {
             showspinner: false,
             showredirect: false,
             product_id: undefined,
-            role:{},
+            role: {},
             buttonStatus: {},
             products: [],
             product: {},
@@ -189,6 +193,7 @@ export default {
             out_name: "",
             out_des: "",
             myproducts: [],
+            newproducts: [],
             columns: [
                 {
                     label: 'Nombre',
@@ -226,7 +231,7 @@ export default {
         this.command = JSON.parse(this.info);
         this.getInsumos(this.command.id);
         this.role = this.role_id;
-        if(this.role > 2 ){
+        if (this.role > 2) {
             this.columns = [
                 {
                     label: 'Nombre',
@@ -250,7 +255,7 @@ export default {
     methods: {
         saveSale: function () {
             var token = $('meta[name="csrf-token"]').attr('content');
-            this.serviceCommand.saveInsumos(this.myproducts, token, this.command.id).then(response => {
+            this.serviceCommand.saveInsumos(this.myproducts, this.newproducts, token, this.command.id).then(response => {
                 if (response.status === 200) {
                     Swal.fire({
                         icon: 'success',
@@ -268,28 +273,28 @@ export default {
             });
         },
         updateStatusCommand: function (type) {
-                this.showspinner = true;
-                var token = $('meta[name="csrf-token"]').attr('content');
-                this.serviceCommand.updateStatusCommand(this.command,token,type).then(response => { 
-                    this.showspinner=false;
-                    if(response.status==200){
-                        Swal.fire({
-                            icon: 'success',
-                            title: response.message,
-                            showConfirmButton: false,
-                            timer: 1500,
-                        }).then(()=>{
-                            this.showredirect = true;
-                            window.location.href = this.url +"/admin/commands";
-                        });
-                    }else{
-                        Swal.fire({
-                                icon: 'error',
-                                title: 'Oops...',
-                                text: 'No se realizó el registro',
-                        });
-                    }
-                });
+            this.showspinner = true;
+            var token = $('meta[name="csrf-token"]').attr('content');
+            this.serviceCommand.updateStatusCommand(this.command, token, type).then(response => {
+                this.showspinner = false;
+                if (response.status == 200) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: response.message,
+                        showConfirmButton: false,
+                        timer: 1500,
+                    }).then(() => {
+                        this.showredirect = true;
+                        window.location.href = this.url + "/admin/commands";
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'No se realizó el registro',
+                    });
+                }
+            });
         },
         getProducts: function () {
             this.serviceProduct.getProducts().then(response => {
@@ -309,25 +314,22 @@ export default {
         addProduct() {
             if (Number.parseInt(this.quantity) > 0) {
                 var aux = this.products.find(x => x.id == this.product_id);
-                    var item = this.myproducts.find(x => x.name == this.name);
-                    if (item != undefined) {//si esta registrado y solo aumentamos la cantidad
-                        item.quantity = Number.parseInt(item.quantity) + Number.parseInt(this.quantity);
-                        item.total = Number.parseInt(item.quantity) * Number.parseFloat(item.price);
-                    } else {
-                        item = {
-                            name: aux.name,
-                            description: aux.description,
-                            price: this.price,
-                            quantity: Number.parseInt(this.quantity),
-                            total: Number.parseInt(this.quantity) * Number.parseFloat(this.price),
-                        };
-                        this.myproducts.push(item);
-                    }
-                    this.quantity = 1;
-                    this.price = 0;
-                    this.product_id = undefined;
-                    this.calculateTotal(this.myproducts);
-                    
+                var item = {
+                    id: this.getLastId(),
+                    name: aux.name,
+                    description: aux.description,
+                    price: this.price,
+                    quantity: Number.parseInt(this.quantity),
+                    total: Number.parseInt(this.quantity) * Number.parseFloat(this.price),
+                };
+                this.myproducts.push(item);
+                this.newproducts.push(item);
+
+                this.quantity = 1;
+                this.price = 0;
+                this.product_id = undefined;
+                this.calculateTotal(this.myproducts);
+
             } else {
                 Swal.fire({
                     icon: 'warning',
@@ -338,27 +340,24 @@ export default {
         },
         addProductOut() {
             if (Number.parseInt(this.out_quantity) > 0) {
-                    var item = this.myproducts.find(x => x.name == this.out_name);
-                    if (item != undefined) {//si esta registrado y solo aumentamos la cantidad
-                        item.quantity = Number.parseInt(item.quantity) + Number.parseInt(this.out_quantity);
-                        item.total = Number.parseInt(item.quantity) * Number.parseFloat(this.out_price);
-                    } else {
-                        item = {
-                            name: this.out_name,
-                            description: this.out_des,
-                            price: this.out_price,
-                            quantity: Number.parseInt(this.out_quantity),
-                            total: Number.parseInt(this.out_quantity) * Number.parseFloat(this.out_price)
-                        };
-                        this.myproducts.push(item);
-                    }
-                    this.out_name = "";
-                    this.out_des = "";
-                    this.out_quantity = undefined;
-                    this.out_price = undefined;
-                    this.calculateTotal(this.myproducts);
-                    
-                    $("[data-dismiss=modal]").trigger({ type: "click" });
+                var item = {
+                    id: this.getLastId(),
+                    name: this.out_name,
+                    description: this.out_des,
+                    price: this.out_price,
+                    quantity: Number.parseInt(this.out_quantity),
+                    total: Number.parseInt(this.out_quantity) * Number.parseFloat(this.out_price)
+                };
+                this.myproducts.push(item);
+                this.newproducts.push(item);
+
+                this.out_name = "";
+                this.out_des = "";
+                this.out_quantity = undefined;
+                this.out_price = undefined;
+                this.calculateTotal(this.myproducts);
+
+                $("[data-dismiss=modal]").trigger({ type: "click" });
             } else {
                 Swal.fire({
                     icon: 'warning',
@@ -367,30 +366,11 @@ export default {
                 });
             }
         },
-        incrementProduct: function (name) {
-            var item = this.myproducts.find(x => x.name == name);
-            item.quantity = Number.parseInt(item.quantity) + 1;
-            item.total = Number.parseInt(item.quantity) * Number.parseFloat(item.price);
-            this.calculateTotal(this.myproducts);
-        },
-        reduceProduct: function (name) {
-            for (var i = 0; i < this.myproducts.length; i++) {
-                if (this.myproducts[i].name === name) {
-                    this.myproducts[i].quantity = Number.parseInt(this.myproducts[i].quantity) - 1;
-                    this.myproducts[i].total = Number.parseInt(this.myproducts[i].quantity) * Number.parseFloat(this.myproducts[i].price);
-
-                    if (this.myproducts[i].quantity < 1) {
-                        this.myproducts.splice(i, 1);
-                    }
-                }
-            }
-            this.calculateTotal(this.myproducts);
-        },
-        removeProduct: function (name) {
+        removeProduct: function (id) {
             Swal.fire({
                 icon: 'warning',
-                title: 'Quitar insumo',
-                text: '¿Está seguro de quitar este insumo?',
+                title: 'Quitar consumo',
+                text: '¿Está seguro de quitar este consumo?',
                 showConfirmButton: true,
                 confirmButtonText: 'Sí, Quitar',
                 showCancelButton: true,
@@ -398,8 +378,13 @@ export default {
             }).then((result) => {
                 if (result.isConfirmed) {
                     for (var i = 0; i < this.myproducts.length; i++) {
-                        if (this.myproducts[i].name === name) {
+                        if (this.myproducts[i].id === id) {
                             this.myproducts.splice(i, 1);
+                        }
+                    }
+                    for (var i = 0; i < this.newproducts.length; i++) {
+                        if (this.newproducts[i].id === id) {
+                            this.newproducts.splice(i, 1);
                         }
                     }
                     this.calculateTotal(this.myproducts);
@@ -407,12 +392,15 @@ export default {
                 }
             });
         },
-        calculateTotal: function(list){
+        calculateTotal: function (list) {
             var aux = 0;
             list.forEach(element => {
                 aux += Number.parseFloat(element.total);
             });
             this.total = aux;
+        },
+        getLastId(){
+            return this.myproducts[this.myproducts.length -1].id  + 1;
         }
     },
     watch: {
@@ -465,8 +453,8 @@ export default {
 }
 
 .btn-product-list {
-    width: 33px;
-    height: 33px;
+    width: 25px;
+    height: 25px;
     color: white;
     -webkit-border-radius: 50px;
     -moz-border-radius: 50px;
@@ -481,14 +469,6 @@ export default {
     opacity: 0.70;
     -moz-opacity: .70;
     filter: alpha (opacity=70);
-}
-
-.btn-increment {
-    background-color: #24C334;
-}
-
-.btn-reduce {
-    background-color: #006983;
 }
 
 .btn-remove {

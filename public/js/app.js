@@ -5264,6 +5264,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -5295,6 +5299,7 @@ Vue.component("v-select", vue_select__WEBPACK_IMPORTED_MODULE_3___default.a);
       out_name: "",
       out_des: "",
       myproducts: [],
+      newproducts: [],
       columns: [{
         label: 'Nombre',
         field: 'name'
@@ -5344,7 +5349,7 @@ Vue.component("v-select", vue_select__WEBPACK_IMPORTED_MODULE_3___default.a);
   methods: {
     saveSale: function saveSale() {
       var token = $('meta[name="csrf-token"]').attr('content');
-      this.serviceCommand.saveInsumos(this.myproducts, token, this.command.id).then(function (response) {
+      this.serviceCommand.saveInsumos(this.myproducts, this.newproducts, token, this.command.id).then(function (response) {
         if (response.status === 200) {
           sweetalert2_dist_sweetalert2_js__WEBPACK_IMPORTED_MODULE_1___default.a.fire({
             icon: 'success',
@@ -5409,23 +5414,16 @@ Vue.component("v-select", vue_select__WEBPACK_IMPORTED_MODULE_3___default.a);
         var aux = this.products.find(function (x) {
           return x.id == _this4.product_id;
         });
-        var item = this.myproducts.find(function (x) {
-          return x.name == _this4.name;
-        });
-        if (item != undefined) {
-          //si esta registrado y solo aumentamos la cantidad
-          item.quantity = Number.parseInt(item.quantity) + Number.parseInt(this.quantity);
-          item.total = Number.parseInt(item.quantity) * Number.parseFloat(item.price);
-        } else {
-          item = {
-            name: aux.name,
-            description: aux.description,
-            price: this.price,
-            quantity: Number.parseInt(this.quantity),
-            total: Number.parseInt(this.quantity) * Number.parseFloat(this.price)
-          };
-          this.myproducts.push(item);
-        }
+        var item = {
+          id: this.getLastId(),
+          name: aux.name,
+          description: aux.description,
+          price: this.price,
+          quantity: Number.parseInt(this.quantity),
+          total: Number.parseInt(this.quantity) * Number.parseFloat(this.price)
+        };
+        this.myproducts.push(item);
+        this.newproducts.push(item);
         this.quantity = 1;
         this.price = 0;
         this.product_id = undefined;
@@ -5439,25 +5437,17 @@ Vue.component("v-select", vue_select__WEBPACK_IMPORTED_MODULE_3___default.a);
       }
     },
     addProductOut: function addProductOut() {
-      var _this5 = this;
       if (Number.parseInt(this.out_quantity) > 0) {
-        var item = this.myproducts.find(function (x) {
-          return x.name == _this5.out_name;
-        });
-        if (item != undefined) {
-          //si esta registrado y solo aumentamos la cantidad
-          item.quantity = Number.parseInt(item.quantity) + Number.parseInt(this.out_quantity);
-          item.total = Number.parseInt(item.quantity) * Number.parseFloat(this.out_price);
-        } else {
-          item = {
-            name: this.out_name,
-            description: this.out_des,
-            price: this.out_price,
-            quantity: Number.parseInt(this.out_quantity),
-            total: Number.parseInt(this.out_quantity) * Number.parseFloat(this.out_price)
-          };
-          this.myproducts.push(item);
-        }
+        var item = {
+          id: this.getLastId(),
+          name: this.out_name,
+          description: this.out_des,
+          price: this.out_price,
+          quantity: Number.parseInt(this.out_quantity),
+          total: Number.parseInt(this.out_quantity) * Number.parseFloat(this.out_price)
+        };
+        this.myproducts.push(item);
+        this.newproducts.push(item);
         this.out_name = "";
         this.out_des = "";
         this.out_quantity = undefined;
@@ -5474,44 +5464,29 @@ Vue.component("v-select", vue_select__WEBPACK_IMPORTED_MODULE_3___default.a);
         });
       }
     },
-    incrementProduct: function incrementProduct(name) {
-      var item = this.myproducts.find(function (x) {
-        return x.name == name;
-      });
-      item.quantity = Number.parseInt(item.quantity) + 1;
-      item.total = Number.parseInt(item.quantity) * Number.parseFloat(item.price);
-      this.calculateTotal(this.myproducts);
-    },
-    reduceProduct: function reduceProduct(name) {
-      for (var i = 0; i < this.myproducts.length; i++) {
-        if (this.myproducts[i].name === name) {
-          this.myproducts[i].quantity = Number.parseInt(this.myproducts[i].quantity) - 1;
-          this.myproducts[i].total = Number.parseInt(this.myproducts[i].quantity) * Number.parseFloat(this.myproducts[i].price);
-          if (this.myproducts[i].quantity < 1) {
-            this.myproducts.splice(i, 1);
-          }
-        }
-      }
-      this.calculateTotal(this.myproducts);
-    },
-    removeProduct: function removeProduct(name) {
-      var _this6 = this;
+    removeProduct: function removeProduct(id) {
+      var _this5 = this;
       sweetalert2_dist_sweetalert2_js__WEBPACK_IMPORTED_MODULE_1___default.a.fire({
         icon: 'warning',
-        title: 'Quitar insumo',
-        text: '¿Está seguro de quitar este insumo?',
+        title: 'Quitar consumo',
+        text: '¿Está seguro de quitar este consumo?',
         showConfirmButton: true,
         confirmButtonText: 'Sí, Quitar',
         showCancelButton: true,
         denyButtonText: 'Cancelar'
       }).then(function (result) {
         if (result.isConfirmed) {
-          for (var i = 0; i < _this6.myproducts.length; i++) {
-            if (_this6.myproducts[i].name === name) {
-              _this6.myproducts.splice(i, 1);
+          for (var i = 0; i < _this5.myproducts.length; i++) {
+            if (_this5.myproducts[i].id === id) {
+              _this5.myproducts.splice(i, 1);
             }
           }
-          _this6.calculateTotal(_this6.myproducts);
+          for (var i = 0; i < _this5.newproducts.length; i++) {
+            if (_this5.newproducts[i].id === id) {
+              _this5.newproducts.splice(i, 1);
+            }
+          }
+          _this5.calculateTotal(_this5.myproducts);
           sweetalert2_dist_sweetalert2_js__WEBPACK_IMPORTED_MODULE_1___default.a.fire('Quitado!', '', 'success');
         }
       });
@@ -5522,6 +5497,9 @@ Vue.component("v-select", vue_select__WEBPACK_IMPORTED_MODULE_3___default.a);
         aux += Number.parseFloat(element.total);
       });
       this.total = aux;
+    },
+    getLastId: function getLastId() {
+      return this.myproducts[this.myproducts.length - 1].id + 1;
     }
   },
   watch: {
@@ -10060,7 +10038,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.row>[class*=col-] {\r\n    margin-bottom: 15px;\n}\n.gradient-1 {\r\n    padding: 3px 7px 0px 7px;\r\n    border: 3px solid #FFF;\r\n    outline: 3px solid #2f8fb4;\r\n    color: black;\n}\n.d-flex {\r\n    display: flex;\n}\n.form-wizard .select2-container {\r\n    border: 1px solid rgb(82, 82, 82);\n}\n.form-wizard input[type=number] {\r\n    border: 1px solid rgb(82, 82, 82);\n}\n.voyager .table thead tr th {\r\n    background-color: #17ac7f;\r\n    color: #FFF;\n}\n.voyager .table {\r\n    margin-bottom: 0;\n}\n.voyager .table tbody {\r\n    color: black;\n}\n.btn-product-list {\r\n    width: 33px;\r\n    height: 33px;\r\n    color: white;\r\n    -webkit-border-radius: 50px;\r\n    -moz-border-radius: 50px;\r\n    border-radius: 50px;\r\n    font-size: 13px;\r\n    text-transform: uppercase;\r\n    border: transparent;\r\n    display: inline-block;\n}\n.btn-product-list:hover {\r\n    opacity: 0.70;\r\n    -moz-opacity: .70;\r\n    filter: alpha (opacity=70);\n}\n.btn-increment {\r\n    background-color: #24C334;\n}\n.btn-reduce {\r\n    background-color: #006983;\n}\n.btn-remove {\r\n    background-color: #910000;\n}\n.table-total {\r\n    padding: 3px 10px;\r\n    border: 2px solid #FFF;\r\n    outline: 2px solid #C64D0D;\r\n    background-color: #C64D0D;\n}\n.table-total .table {\r\n    color: rgb(255, 255, 255);\r\n    text-align: center;\r\n    font-size: 11pt;\n}\r\n", ""]);
+exports.push([module.i, "\n.row>[class*=col-] {\r\n    margin-bottom: 15px;\n}\n.gradient-1 {\r\n    padding: 3px 7px 0px 7px;\r\n    border: 3px solid #FFF;\r\n    outline: 3px solid #2f8fb4;\r\n    color: black;\n}\n.d-flex {\r\n    display: flex;\n}\n.form-wizard .select2-container {\r\n    border: 1px solid rgb(82, 82, 82);\n}\n.form-wizard input[type=number] {\r\n    border: 1px solid rgb(82, 82, 82);\n}\n.voyager .table thead tr th {\r\n    background-color: #17ac7f;\r\n    color: #FFF;\n}\n.voyager .table {\r\n    margin-bottom: 0;\n}\n.voyager .table tbody {\r\n    color: black;\n}\n.btn-product-list {\r\n    width: 25px;\r\n    height: 25px;\r\n    color: white;\r\n    -webkit-border-radius: 50px;\r\n    -moz-border-radius: 50px;\r\n    border-radius: 50px;\r\n    font-size: 13px;\r\n    text-transform: uppercase;\r\n    border: transparent;\r\n    display: inline-block;\n}\n.btn-product-list:hover {\r\n    opacity: 0.70;\r\n    -moz-opacity: .70;\r\n    filter: alpha (opacity=70);\n}\n.btn-remove {\r\n    background-color: #910000;\n}\n.table-total {\r\n    padding: 3px 10px;\r\n    border: 2px solid #FFF;\r\n    outline: 2px solid #C64D0D;\r\n    background-color: #C64D0D;\n}\n.table-total .table {\r\n    color: rgb(255, 255, 255);\r\n    text-align: center;\r\n    font-size: 11pt;\n}\r\n", ""]);
 
 // exports
 
@@ -69158,7 +69136,7 @@ var render = function () {
                       },
                       [
                         _vm._v(
-                          "Buscar\n                                Insumo:\n                            "
+                          "Buscar\n                                Consumo:\n                            "
                         ),
                       ]
                     ),
@@ -69251,8 +69229,8 @@ var render = function () {
                               staticStyle: { width: "100px" },
                               attrs: {
                                 type: "number",
-                                name: "quantity",
-                                id: "quantity",
+                                name: "price",
+                                id: "price",
                               },
                               domProps: { value: _vm.price },
                               on: {
@@ -69362,52 +69340,10 @@ var render = function () {
                                     "button",
                                     {
                                       staticClass:
-                                        "btn-product-list btn-increment",
-                                      on: {
-                                        click: function ($event) {
-                                          return _vm.incrementProduct(
-                                            props.row.name
-                                          )
-                                        },
-                                      },
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\n                                    +\n                                "
-                                      ),
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "button",
-                                    {
-                                      staticClass:
-                                        "btn-product-list btn-reduce",
-                                      on: {
-                                        click: function ($event) {
-                                          return _vm.reduceProduct(
-                                            props.row.name
-                                          )
-                                        },
-                                      },
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\n                                    -\n                                "
-                                      ),
-                                    ]
-                                  ),
-                                  _vm._v(" "),
-                                  _c(
-                                    "button",
-                                    {
-                                      staticClass:
                                         "btn-product-list btn-remove",
                                       on: {
                                         click: function ($event) {
-                                          return _vm.removeProduct(
-                                            props.row.name
-                                          )
+                                          return _vm.removeProduct(props.row.id)
                                         },
                                       },
                                     },
@@ -69476,7 +69412,7 @@ var render = function () {
                 },
               },
             },
-            [_vm._v("Cerrar cuenta")]
+            [_vm._v("Cerrar\n                cuenta")]
           )
         : _vm._e(),
       _vm._v(" "),
@@ -69731,7 +69667,7 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "text-center" }, [
       _c("h3", { staticStyle: { margin: "0px 0px 15px 0px" } }, [
-        _vm._v("LISTA DE INSUMOS"),
+        _vm._v("LISTA DE CONSUMO"),
       ]),
     ])
   },
@@ -87598,13 +87534,14 @@ var CommandService = /*#__PURE__*/_createClass(function CommandService() {
     };
   }());
   _defineProperty(this, "saveInsumos", /*#__PURE__*/function () {
-    var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(insumos, token, id) {
+    var _ref4 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(insumos, newinsumos, token, id) {
       var command, requestOptions, response, data;
       return _regeneratorRuntime().wrap(function _callee4$(_context4) {
         while (1) switch (_context4.prev = _context4.next) {
           case 0:
             command = {
-              products: insumos
+              products: insumos,
+              newproducts: newinsumos
             };
             requestOptions = {
               method: 'PUT',
@@ -87629,7 +87566,7 @@ var CommandService = /*#__PURE__*/_createClass(function CommandService() {
         }
       }, _callee4);
     }));
-    return function (_x8, _x9, _x10) {
+    return function (_x8, _x9, _x10, _x11) {
       return _ref4.apply(this, arguments);
     };
   }());
@@ -87654,7 +87591,7 @@ var CommandService = /*#__PURE__*/_createClass(function CommandService() {
         }
       }, _callee5);
     }));
-    return function (_x11) {
+    return function (_x12) {
       return _ref5.apply(this, arguments);
     };
   }());
