@@ -9,7 +9,7 @@ export class CommandService {
             },
             body: JSON.stringify(command)
         };
-        const response = await fetch('/api/command/add', requestOptions);
+        const response = await fetch('/sigi_barra_medica/public/api/command/add', requestOptions);
         const data = await response.json();
         return data;
     }
@@ -23,7 +23,7 @@ export class CommandService {
             },
             body: JSON.stringify(command)
         };
-        const response = await fetch('/api/command/edit', requestOptions);
+        const response = await fetch('/sigi_barra_medica/public/api/command/edit', requestOptions);
         const data = await response.json();
         return data;
     }
@@ -38,7 +38,7 @@ export class CommandService {
             },
             body: JSON.stringify(command)
         };
-        const response = await fetch('/api/command/updateStatusCommand', requestOptions, type);
+        const response = await fetch('/sigi_barra_medica/public/api/command/updateStatusCommand', requestOptions, type);
         const data = await response.json();
         console.log(data);
         return data;
@@ -57,19 +57,19 @@ export class CommandService {
             },
             body: JSON.stringify(command)
         };
-        const response = await fetch('/api/save-insumos/' + id, requestOptions);
+        const response = await fetch('/sigi_barra_medica/public/api/save-insumos/' + id, requestOptions);
         const data = await response.json();
         return data;
     }
 
     getInsumos = async(id) => {
-        const response = await fetch('/api/command/' + id + '/insumos');
+        const response = await fetch('/sigi_barra_medica/public/api/command/' + id + '/insumos');
         const data = await response.json();
         return data;
     }
 
     getRooms = async() => {
-        const response = await fetch('/api/rooms');
+        const response = await fetch('/sigi_barra_medica/public/api/rooms');
         const data = await response.json();
         return data;
     }
