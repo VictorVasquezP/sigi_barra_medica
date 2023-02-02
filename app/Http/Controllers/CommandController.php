@@ -199,11 +199,27 @@ class CommandController extends VoyagerBaseController
     public function saveInsumos(Request $request, $id)
     {
         $array = [];
+        $role_id = Auth::user()->role_id;
+        $permission = $role_id <= 2; // si es soporte o admin
         DB::beginTransaction();
         try {
             $command = Command::find($id);
             $insumos = $command->insumos;
+            /** Actualizamos los productos */
             /** Bucle para agregar o actualizar los datos del insumo en el registro */
+            foreach ($request->products as $product) {
+                if ($insumos->contains('id', '=', $product["id"])) { // si contiene el insumo es que no es nuevo
+                    $insumo = ProductCommand::find($product["id"]);
+                    $insumo->quantity = $product["quantity"];
+                    $insumo->total = $product["total"];
+                    if($permission){
+                        $insumo->price = $product["price"];
+                    }
+                    $insumo->update();
+                }
+            }
+
+            /** Registramos los nuevos productos */
             foreach ($request->newproducts as $product) {
                     $insumo = new ProductCommand();
                     $insumo->command_id = $id;

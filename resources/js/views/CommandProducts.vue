@@ -84,10 +84,22 @@
     ofLabel: 'de',
     rowsPerPageLabel: 'Productos por página'
 }">
-                        <template slot="table-row" slot-scope="props" v-if="command.status_id == 3">
-                            <span v-if="props.column.field == 'actions'">
+                        <template slot="table-row" slot-scope="props"
+                            v-if="(command.status_id == 3) || (command.status_id < 5 && role <= 2)">
+                            <span v-if="props.column.field == 'actions'"
+                                style="display: flex; justify-content: space-evenly;">
+                                <button class="btn-product-list btn-increment" @click="incrementProduct(props.row.id)">
+                                    +
+                                </button>
+                                <button class="btn-product-list btn-reduce" @click="reduceProduct(props.row.id)">
+                                    -
+                                </button>
                                 <button class="btn-product-list btn-remove" @click="removeProduct(props.row.id)">
                                     x
+                                </button>
+                                <button v-if="(role <= 2)" 
+                                        class="btn-product-list btn-edit" @click="editProduct(props.row.id)">
+                                    <i class="voyager-edit"></i>
                                 </button>
                             </span>
                             <span v-else>
@@ -320,7 +332,7 @@ export default {
                     description: aux.description,
                     price: this.price,
                     quantity: Number.parseInt(this.quantity),
-                    total: Number.parseInt(this.quantity) * Number.parseFloat(this.price),
+                    total: (Number.parseInt(this.quantity) * Number.parseFloat(this.price)).toFixed(2),
                 };
                 this.myproducts.push(item);
                 this.newproducts.push(item);
@@ -346,7 +358,7 @@ export default {
                     description: this.out_des,
                     price: this.out_price,
                     quantity: Number.parseInt(this.out_quantity),
-                    total: Number.parseInt(this.out_quantity) * Number.parseFloat(this.out_price)
+                    total: (Number.parseInt(this.out_quantity) * Number.parseFloat(this.out_price)).toFixed(2)
                 };
                 this.myproducts.push(item);
                 this.newproducts.push(item);
@@ -365,6 +377,38 @@ export default {
                     text: 'Debe ingresar una cantidad mayor a cero',
                 });
             }
+        },
+        incrementProduct: function (id) {
+            var item = this.myproducts.find(x => x.id == id);
+            item.quantity = Number.parseInt(item.quantity) + 1;
+            item.total = (Number.parseInt(item.quantity) * Number.parseFloat(item.price)).toFixed(2);
+
+            var item2 = this.newproducts.find(x => x.id == id);
+            item2.quantity = Number.parseInt(item2.quantity) + 1;
+            item2.total = (Number.parseInt(item2.quantity) * Number.parseFloat(item2.price)).toFixed(2);
+
+            this.calculateTotal(this.myproducts);
+        },
+        reduceProduct: function (id) {
+            for (var i = 0; i < this.myproducts.length; i++) {
+                if (this.myproducts[i].id === id) {
+                    this.myproducts[i].quantity = Number.parseInt(this.myproducts[i].quantity) - 1;
+                    this.myproducts[i].total = (Number.parseInt(this.myproducts[i].quantity) * Number.parseFloat(this.myproducts[i].price)).toFixed(2);
+                    if (this.myproducts[i].quantity < 1) {
+                        this.myproducts.splice(i, 1);
+                    }
+                }
+            }
+            for (var i = 0; i < this.newproducts.length; i++) {
+                if (this.newproducts[i].id === id) {
+                    this.newproducts[i].quantity = Number.parseInt(this.newproducts[i].quantity) - 1;
+                    this.newproducts[i].total = (Number.parseInt(this.newproducts[i].quantity) * Number.parseFloat(this.newproducts[i].price)).toFixed(2);
+                    if (this.newproducts[i].quantity < 1) {
+                        this.newproducts.splice(i, 1);
+                    }
+                }
+            }
+            this.calculateTotal(this.myproducts);
         },
         removeProduct: function (id) {
             Swal.fire({
@@ -392,6 +436,33 @@ export default {
                 }
             });
         },
+        editProduct: function (id) {
+            var item = this.myproducts.find(x => x.id == id);
+            Swal.fire({
+                title: 'Editar Consumo',
+                html: '<label>Nombre</label><input type="text" id="name" class="swal2-input" placeholder="Nombre" value="'+item.name+'">'+
+                '<label>Precio</label><input type="number" id="price" class="swal2-input" placeholder="Precio" value="'+item.price+'">',
+                confirmButtonText: 'Guardar',
+                cancelButtonText: 'Cerrar',
+                focusConfirm: false,
+                showCancelButton: true,
+                preConfirm: () => {
+                    const name = Swal.getPopup().querySelector('#name').value
+                    const price = Swal.getPopup().querySelector('#price').value
+                    if (!name || !price) {
+                        Swal.showValidationMessage(`Por favor ingrese un valor en los campos`)
+                    }
+                    return { name, price}
+                }
+            }).then((result) => {
+                if(result.isConfirmed){
+                    item.name = result.value.name;
+                    item.price = Number.parseInt(result.value.price).toFixed(2);
+                    item.total = (Number.parseInt(item.quantity) * Number.parseFloat(item.price)).toFixed(2);
+                    this.calculateTotal(this.myproducts);
+                }
+            });
+        },
         calculateTotal: function (list) {
             var aux = 0;
             list.forEach(element => {
@@ -399,11 +470,11 @@ export default {
             });
             this.total = aux;
         },
-        getLastId(){
-            if(this.myproducts.length == 0){
+        getLastId() {
+            if (this.myproducts.length == 0) {
                 return 1;
-            }else{
-                return this.myproducts[this.myproducts.length -1].id  + 1;
+            } else {
+                return this.myproducts[this.myproducts.length - 1].id + 1;
             }
         }
     },
@@ -473,6 +544,18 @@ export default {
     opacity: 0.70;
     -moz-opacity: .70;
     filter: alpha (opacity=70);
+}
+
+.btn-increment {
+    background-color: #24C334;
+}
+
+.btn-reduce {
+    background-color: #006983;
+}
+
+.btn-edit {
+    background-color: #0a68d3;
 }
 
 .btn-remove {

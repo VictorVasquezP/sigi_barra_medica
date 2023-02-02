@@ -14,6 +14,6 @@ class Room extends Model
         $role_id = Auth::user()->role_id;
         $role = Role::find($role_id);
         $type_room = TypeRoom::all()->where('name','=',$role->display_name)->first();
-        return $query->where('status_id','=','1')->where('type','=',$type_room->id);
+        return $query->where('type','=',$type_room->id);
     }
 }

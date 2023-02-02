@@ -5268,6 +5268,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -5420,7 +5432,7 @@ Vue.component("v-select", vue_select__WEBPACK_IMPORTED_MODULE_3___default.a);
           description: aux.description,
           price: this.price,
           quantity: Number.parseInt(this.quantity),
-          total: Number.parseInt(this.quantity) * Number.parseFloat(this.price)
+          total: (Number.parseInt(this.quantity) * Number.parseFloat(this.price)).toFixed(2)
         };
         this.myproducts.push(item);
         this.newproducts.push(item);
@@ -5444,7 +5456,7 @@ Vue.component("v-select", vue_select__WEBPACK_IMPORTED_MODULE_3___default.a);
           description: this.out_des,
           price: this.out_price,
           quantity: Number.parseInt(this.out_quantity),
-          total: Number.parseInt(this.out_quantity) * Number.parseFloat(this.out_price)
+          total: (Number.parseInt(this.out_quantity) * Number.parseFloat(this.out_price)).toFixed(2)
         };
         this.myproducts.push(item);
         this.newproducts.push(item);
@@ -5463,6 +5475,40 @@ Vue.component("v-select", vue_select__WEBPACK_IMPORTED_MODULE_3___default.a);
           text: 'Debe ingresar una cantidad mayor a cero'
         });
       }
+    },
+    incrementProduct: function incrementProduct(id) {
+      var item = this.myproducts.find(function (x) {
+        return x.id == id;
+      });
+      item.quantity = Number.parseInt(item.quantity) + 1;
+      item.total = (Number.parseInt(item.quantity) * Number.parseFloat(item.price)).toFixed(2);
+      var item2 = this.newproducts.find(function (x) {
+        return x.id == id;
+      });
+      item2.quantity = Number.parseInt(item2.quantity) + 1;
+      item2.total = (Number.parseInt(item2.quantity) * Number.parseFloat(item2.price)).toFixed(2);
+      this.calculateTotal(this.myproducts);
+    },
+    reduceProduct: function reduceProduct(id) {
+      for (var i = 0; i < this.myproducts.length; i++) {
+        if (this.myproducts[i].id === id) {
+          this.myproducts[i].quantity = Number.parseInt(this.myproducts[i].quantity) - 1;
+          this.myproducts[i].total = (Number.parseInt(this.myproducts[i].quantity) * Number.parseFloat(this.myproducts[i].price)).toFixed(2);
+          if (this.myproducts[i].quantity < 1) {
+            this.myproducts.splice(i, 1);
+          }
+        }
+      }
+      for (var i = 0; i < this.newproducts.length; i++) {
+        if (this.newproducts[i].id === id) {
+          this.newproducts[i].quantity = Number.parseInt(this.newproducts[i].quantity) - 1;
+          this.newproducts[i].total = (Number.parseInt(this.newproducts[i].quantity) * Number.parseFloat(this.newproducts[i].price)).toFixed(2);
+          if (this.newproducts[i].quantity < 1) {
+            this.newproducts.splice(i, 1);
+          }
+        }
+      }
+      this.calculateTotal(this.myproducts);
     },
     removeProduct: function removeProduct(id) {
       var _this5 = this;
@@ -5488,6 +5534,38 @@ Vue.component("v-select", vue_select__WEBPACK_IMPORTED_MODULE_3___default.a);
           }
           _this5.calculateTotal(_this5.myproducts);
           sweetalert2_dist_sweetalert2_js__WEBPACK_IMPORTED_MODULE_1___default.a.fire('Quitado!', '', 'success');
+        }
+      });
+    },
+    editProduct: function editProduct(id) {
+      var _this6 = this;
+      var item = this.myproducts.find(function (x) {
+        return x.id == id;
+      });
+      sweetalert2_dist_sweetalert2_js__WEBPACK_IMPORTED_MODULE_1___default.a.fire({
+        title: 'Editar Consumo',
+        html: '<label>Nombre</label><input type="text" id="name" class="swal2-input" placeholder="Nombre" value="' + item.name + '">' + '<label>Precio</label><input type="number" id="price" class="swal2-input" placeholder="Precio" value="' + item.price + '">',
+        confirmButtonText: 'Guardar',
+        cancelButtonText: 'Cerrar',
+        focusConfirm: false,
+        showCancelButton: true,
+        preConfirm: function preConfirm() {
+          var name = sweetalert2_dist_sweetalert2_js__WEBPACK_IMPORTED_MODULE_1___default.a.getPopup().querySelector('#name').value;
+          var price = sweetalert2_dist_sweetalert2_js__WEBPACK_IMPORTED_MODULE_1___default.a.getPopup().querySelector('#price').value;
+          if (!name || !price) {
+            sweetalert2_dist_sweetalert2_js__WEBPACK_IMPORTED_MODULE_1___default.a.showValidationMessage("Por favor ingrese un valor en los campos");
+          }
+          return {
+            name: name,
+            price: price
+          };
+        }
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          item.name = result.value.name;
+          item.price = Number.parseInt(result.value.price).toFixed(2);
+          item.total = (Number.parseInt(item.quantity) * Number.parseFloat(item.price)).toFixed(2);
+          _this6.calculateTotal(_this6.myproducts);
         }
       });
     },
@@ -10042,7 +10120,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, "\n.row>[class*=col-] {\r\n    margin-bottom: 15px;\n}\n.gradient-1 {\r\n    padding: 3px 7px 0px 7px;\r\n    border: 3px solid #FFF;\r\n    outline: 3px solid #2f8fb4;\r\n    color: black;\n}\n.d-flex {\r\n    display: flex;\n}\n.form-wizard .select2-container {\r\n    border: 1px solid rgb(82, 82, 82);\n}\n.form-wizard input[type=number] {\r\n    border: 1px solid rgb(82, 82, 82);\n}\n.voyager .table thead tr th {\r\n    background-color: #17ac7f;\r\n    color: #FFF;\n}\n.voyager .table {\r\n    margin-bottom: 0;\n}\n.voyager .table tbody {\r\n    color: black;\n}\n.btn-product-list {\r\n    width: 25px;\r\n    height: 25px;\r\n    color: white;\r\n    -webkit-border-radius: 50px;\r\n    -moz-border-radius: 50px;\r\n    border-radius: 50px;\r\n    font-size: 13px;\r\n    text-transform: uppercase;\r\n    border: transparent;\r\n    display: inline-block;\n}\n.btn-product-list:hover {\r\n    opacity: 0.70;\r\n    -moz-opacity: .70;\r\n    filter: alpha (opacity=70);\n}\n.btn-remove {\r\n    background-color: #910000;\n}\n.table-total {\r\n    padding: 3px 10px;\r\n    border: 2px solid #FFF;\r\n    outline: 2px solid #C64D0D;\r\n    background-color: #C64D0D;\n}\n.table-total .table {\r\n    color: rgb(255, 255, 255);\r\n    text-align: center;\r\n    font-size: 11pt;\n}\r\n", ""]);
+exports.push([module.i, "\n.row>[class*=col-] {\r\n    margin-bottom: 15px;\n}\n.gradient-1 {\r\n    padding: 3px 7px 0px 7px;\r\n    border: 3px solid #FFF;\r\n    outline: 3px solid #2f8fb4;\r\n    color: black;\n}\n.d-flex {\r\n    display: flex;\n}\n.form-wizard .select2-container {\r\n    border: 1px solid rgb(82, 82, 82);\n}\n.form-wizard input[type=number] {\r\n    border: 1px solid rgb(82, 82, 82);\n}\n.voyager .table thead tr th {\r\n    background-color: #17ac7f;\r\n    color: #FFF;\n}\n.voyager .table {\r\n    margin-bottom: 0;\n}\n.voyager .table tbody {\r\n    color: black;\n}\n.btn-product-list {\r\n    width: 25px;\r\n    height: 25px;\r\n    color: white;\r\n    -webkit-border-radius: 50px;\r\n    -moz-border-radius: 50px;\r\n    border-radius: 50px;\r\n    font-size: 13px;\r\n    text-transform: uppercase;\r\n    border: transparent;\r\n    display: inline-block;\n}\n.btn-product-list:hover {\r\n    opacity: 0.70;\r\n    -moz-opacity: .70;\r\n    filter: alpha (opacity=70);\n}\n.btn-increment {\r\n    background-color: #24C334;\n}\n.btn-reduce {\r\n    background-color: #006983;\n}\n.btn-edit {\r\n    background-color: #0a68d3;\n}\n.btn-remove {\r\n    background-color: #910000;\n}\n.table-total {\r\n    padding: 3px 10px;\r\n    border: 2px solid #FFF;\r\n    outline: 2px solid #C64D0D;\r\n    background-color: #C64D0D;\n}\n.table-total .table {\r\n    color: rgb(255, 255, 255);\r\n    text-align: center;\r\n    font-size: 11pt;\n}\r\n", ""]);
 
 // exports
 
@@ -69336,28 +69414,102 @@ var render = function () {
                   {
                     key: "table-row",
                     fn: function (props) {
-                      return _vm.command.status_id == 3
+                      return _vm.command.status_id == 3 ||
+                        (_vm.command.status_id < 5 && _vm.role <= 2)
                         ? [
                             props.column.field == "actions"
-                              ? _c("span", [
-                                  _c(
-                                    "button",
-                                    {
-                                      staticClass:
-                                        "btn-product-list btn-remove",
-                                      on: {
-                                        click: function ($event) {
-                                          return _vm.removeProduct(props.row.id)
+                              ? _c(
+                                  "span",
+                                  {
+                                    staticStyle: {
+                                      display: "flex",
+                                      "justify-content": "space-evenly",
+                                    },
+                                  },
+                                  [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass:
+                                          "btn-product-list btn-increment",
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.incrementProduct(
+                                              props.row.id
+                                            )
+                                          },
                                         },
                                       },
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\n                                    x\n                                "
-                                      ),
-                                    ]
-                                  ),
-                                ])
+                                      [
+                                        _vm._v(
+                                          "\n                                    +\n                                "
+                                        ),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass:
+                                          "btn-product-list btn-reduce",
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.reduceProduct(
+                                              props.row.id
+                                            )
+                                          },
+                                        },
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                                    -\n                                "
+                                        ),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass:
+                                          "btn-product-list btn-remove",
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.removeProduct(
+                                              props.row.id
+                                            )
+                                          },
+                                        },
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                                    x\n                                "
+                                        ),
+                                      ]
+                                    ),
+                                    _vm._v(" "),
+                                    _vm.role <= 2
+                                      ? _c(
+                                          "button",
+                                          {
+                                            staticClass:
+                                              "btn-product-list btn-edit",
+                                            on: {
+                                              click: function ($event) {
+                                                return _vm.editProduct(
+                                                  props.row.id
+                                                )
+                                              },
+                                            },
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass: "voyager-edit",
+                                            }),
+                                          ]
+                                        )
+                                      : _vm._e(),
+                                  ]
+                                )
                               : _c("span", [
                                   _vm._v(
                                     "\n                                " +
@@ -87451,7 +87603,7 @@ var CommandService = /*#__PURE__*/_createClass(function CommandService() {
               body: JSON.stringify(command)
             };
             _context.next = 3;
-            return fetch('/sigi_barra_medica/public/api/command/add', requestOptions);
+            return fetch('/api/command/add', requestOptions);
           case 3:
             response = _context.sent;
             _context.next = 6;
@@ -87484,7 +87636,7 @@ var CommandService = /*#__PURE__*/_createClass(function CommandService() {
               body: JSON.stringify(command)
             };
             _context2.next = 3;
-            return fetch('/sigi_barra_medica/public/api/command/edit', requestOptions);
+            return fetch('/api/command/edit', requestOptions);
           case 3:
             response = _context2.sent;
             _context2.next = 6;
@@ -87518,7 +87670,7 @@ var CommandService = /*#__PURE__*/_createClass(function CommandService() {
               body: JSON.stringify(command)
             };
             _context3.next = 4;
-            return fetch('/sigi_barra_medica/public/api/command/updateStatusCommand', requestOptions, type);
+            return fetch('/api/command/updateStatusCommand', requestOptions, type);
           case 4:
             response = _context3.sent;
             _context3.next = 7;
@@ -87556,7 +87708,7 @@ var CommandService = /*#__PURE__*/_createClass(function CommandService() {
               body: JSON.stringify(command)
             };
             _context4.next = 4;
-            return fetch('/sigi_barra_medica/public/api/save-insumos/' + id, requestOptions);
+            return fetch('/api/save-insumos/' + id, requestOptions);
           case 4:
             response = _context4.sent;
             _context4.next = 7;
@@ -87581,7 +87733,7 @@ var CommandService = /*#__PURE__*/_createClass(function CommandService() {
         while (1) switch (_context5.prev = _context5.next) {
           case 0:
             _context5.next = 2;
-            return fetch('/sigi_barra_medica/public/api/command/' + id + '/insumos');
+            return fetch('/api/command/' + id + '/insumos');
           case 2:
             response = _context5.sent;
             _context5.next = 5;
@@ -87605,7 +87757,7 @@ var CommandService = /*#__PURE__*/_createClass(function CommandService() {
       while (1) switch (_context6.prev = _context6.next) {
         case 0:
           _context6.next = 2;
-          return fetch('/sigi_barra_medica/public/api/rooms');
+          return fetch('/api/rooms');
         case 2:
           response = _context6.sent;
           _context6.next = 5;
@@ -87708,7 +87860,7 @@ var ProductService = /*#__PURE__*/_createClass(function ProductService() {
       while (1) switch (_context.prev = _context.next) {
         case 0:
           _context.next = 2;
-          return fetch('/sigi_barra_medica/public/api/products');
+          return fetch('/api/products');
         case 2:
           response = _context.sent;
           _context.next = 5;
