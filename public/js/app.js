@@ -5018,6 +5018,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -69201,6 +69206,50 @@ var render = function () {
                               "address",
                               $event.target.value
                             )
+                          },
+                        },
+                      }),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "form-group form-wizard col-md-6" },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "control-label",
+                          attrs: { for: "address" },
+                        },
+                        [_vm._v("Telefono")]
+                      ),
+                      _vm._v(" "),
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.command.phone,
+                            expression: "command.phone",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          id: "phone",
+                          name: "phone",
+                          maxlength: "80",
+                          title: "Telefono",
+                          placeholder: "Dirección",
+                        },
+                        domProps: { value: _vm.command.phone },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.command, "phone", $event.target.value)
                           },
                         },
                       }),

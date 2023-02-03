@@ -78,6 +78,11 @@
                                     title="máximo 150 caracteres" placeholder="Dirección" v-model="command.address">
                             </div>
                             <div class="form-group form-wizard col-md-6">
+                                <label for="address" class="control-label">Telefono</label>
+                                <input type="text" id="phone" name="phone" class="form-control" maxlength="80"
+                                    title="Telefono" placeholder="Dirección" v-model="command.phone">
+                            </div>
+                            <div class="form-group form-wizard col-md-6">
                                 <label for="address" class="control-label">Diagnostico</label>
                                 <input type="text" id="diagnostic" name="diagnostic" class="form-control" maxlength="80"
                                     title="máximo 150 caracteres" placeholder="Diagnostico" v-model="command.diagnostic">
