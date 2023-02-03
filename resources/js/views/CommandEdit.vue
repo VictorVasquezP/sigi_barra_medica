@@ -62,6 +62,16 @@
                                 <input type="text" id="patient" name="patient" class="form-control" maxlength="80"
                                     minlength="1" placeholder="Nombre" required v-model="command.patient">
                             </div>
+                            <div class="form-group form-wizard col-md-3">
+                                <label for="first_name" class="control-label">Edad</label>
+                                <input type="text" id="year_old" name="year_old" class="form-control" maxlength="80"
+                                    minlength="1" placeholder="Edad" required v-model="command.year_old">
+                            </div>
+                            <div class="form-group form-wizard col-md-3">
+                                <label for="first_name" class="control-label">Peso</label>
+                                <input type="text" id="weight" name="weight" class="form-control" maxlength="80"
+                                    minlength="1" placeholder="Peso" required v-model="command.weight">
+                            </div>
                             <div class="form-group form-wizard col-md-6">
                                 <label for="address" class="control-label">Dirección</label>
                                 <input type="text" id="address" name="address" class="form-control" maxlength="80"
@@ -71,6 +81,11 @@
                                 <label for="address" class="control-label">Diagnostico</label>
                                 <input type="text" id="diagnostic" name="diagnostic" class="form-control" maxlength="80"
                                     title="máximo 150 caracteres" placeholder="Diagnostico" v-model="command.diagnostic">
+                            </div>
+                            <div class="form-group form-wizard col-md-6">
+                                <label for="address" class="control-label">Alergias</label>
+                                <input type="text" id="allergies" name="allergies" class="form-control" maxlength="80"
+                                    title="máximo 150 caracteres" placeholder="Alergias" v-model="command.allergies">
                             </div>
                             <div class="form-group form-wizard col-md-6">
                                 <label for="first_name" class="control-label">Nombre Doctor</label>
@@ -83,8 +98,14 @@
                                     minlength="1" placeholder="Enfermer@" required v-model="command.nurse">
                             </div>
                             <div class="form-group form-wizard col-md-6">
+                                <label for="first_name" class="control-label">Tipo</label>
+                                <select  class="form-control select2-ajax" name="type" id="type" required v-model="type">
+                                    <option v-for="tr in typesrooms" :value="tr.name">{{tr.name}}</option>
+                                </select>
+                            </div>
+                            <div class="form-group form-wizard col-md-6">
                                 <label for="first_name" class="control-label">Habitación Nueva</label>
-                                <select  class="form-control select2-ajax" name="room_id" id="room_id" required v-model="command.room_id">
+                                <select  class="form-control select2-ajax" name="type" id="type" required v-model="command.room_id">
                                     <option v-for="room in rooms" :value="room.id">{{room.name}}</option>
                                 </select>
                             </div>
@@ -114,6 +135,7 @@ import 'sweetalert2/dist/sweetalert2.min.css'
 import Vue from 'vue'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
+import { type } from 'os'
 
 Vue.component('datetime', Datetime);
 
@@ -127,14 +149,17 @@ export default {
             isHiddenInfo: true,
             isHiddenForm: false,
             command: {},
-            rooms: []
+            rooms: [],
+            typesrooms:[],
+            type:undefined
         }
     },
     mounted: function () {
         this.serviceCommand = factoryApi('command');
         this.command = JSON.parse(this.info);
-        
+        this.type=this.command.type;
         this.getRooms();
+        this.getTypeRooms();
     },
     methods: {
         editCommand: function () {
@@ -213,6 +238,28 @@ export default {
                     this.rooms = response.data;
                 }
             });
+        },
+        getTypeRooms: function () {
+            this.serviceCommand.getTypesRooms().then(response => {
+                if (response.status === 200) {
+                    this.typesrooms = response.data;
+                }
+            });
+        },
+        getRoomsWhere: function (type) {
+            this.serviceCommand.getRoomsWhere(type).then(response => {
+                if (response.status === 200) {
+                    this.rooms = response.data;
+                    console.log(this.rooms);
+                }
+            });
+        },
+    },
+    watch:{
+        type: function(value){
+            this.command.type=value;
+            this.getRoomsWhere(value);
+            
         },
     }
 }

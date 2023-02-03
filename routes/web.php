@@ -37,4 +37,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::put('/rooms/updateStatus/{id}', [RoomController::class,'updateStatus'])->name('rooms.updateStatus');
 
     Route::get('/command/pdf/{id}',[PdfController::class,'commandPdf'])->name('command.pdf');
+
+    Route::get('/typerooms', [RoomController::class,'typesrooms']);
+    Route::get('/roomswhere/{type}', [RoomController::class,'roomswhere']);
 });

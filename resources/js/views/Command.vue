@@ -17,10 +17,25 @@
                                 <input type="text" id="patient" name="patient" class="form-control" maxlength="80"
                                     minlength="1" placeholder="Nombre" required v-model="command.patient">
                             </div>
+                            <div class="form-group form-wizard col-md-3">
+                                <label for="first_name" class="control-label">Edad</label>
+                                <input type="text" id="year_old" name="year_old" class="form-control" maxlength="80"
+                                    minlength="1" placeholder="Edad" required v-model="command.year_old">
+                            </div>
+                            <div class="form-group form-wizard col-md-3">
+                                <label for="first_name" class="control-label">Peso</label>
+                                <input type="text" id="weight" name="weight" class="form-control" maxlength="80"
+                                    minlength="1" placeholder="Peso" required v-model="command.weight">
+                            </div>
                             <div class="form-group form-wizard col-md-6">
                                 <label for="address" class="control-label">Dirección</label>
                                 <input type="text" id="address" name="address" class="form-control" maxlength="80"
                                     title="máximo 150 caracteres" placeholder="Dirección" v-model="command.address">
+                            </div>
+                            <div class="form-group form-wizard col-md-6">
+                                <label for="address" class="control-label">Telefono</label>
+                                <input type="text" id="phone" name="phone" class="form-control" maxlength="80"
+                                    title="Telefono" placeholder="Dirección" v-model="command.phone">
                             </div>
                             <div class="form-group form-wizard col-md-6 text-center">
                                 <label for="start_date" class="control-label">Fecha de Ingreso </label>
@@ -36,6 +51,11 @@
                                 <label for="address" class="control-label">Diagnostico</label>
                                 <input type="text" id="diagnostic" name="diagnostic" class="form-control" maxlength="80"
                                     title="máximo 150 caracteres" placeholder="Diagnostico" v-model="command.diagnostic">
+                            </div>
+                            <div class="form-group form-wizard col-md-6">
+                                <label for="address" class="control-label">Alergias</label>
+                                <input type="text" id="allergies" name="allergies" class="form-control" maxlength="80"
+                                    title="máximo 150 caracteres" placeholder="Alergias" v-model="command.allergies">
                             </div>
                             <div class="form-group form-wizard col-md-6">
                                 <label for="first_name" class="control-label">Nombre Doctor</label>

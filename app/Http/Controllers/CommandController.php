@@ -51,65 +51,74 @@ class CommandController extends VoyagerBaseController
     }
 
     public function storeCommand(Request $request)
-    {
-        $array = [];
-        DB::beginTransaction();
-        try {
-            $command = new Command();
-            $command->patient = $request->patient;
-            $command->address = $request->address;
-            $command->date_admission = date('Y-m-d H:i:s', strtotime($request->date_admission));
-            $command->diagnostic = $request->diagnostic;
-            $command->doctor = $request->doctor;
-            $command->nurse = $request->nurse;
-            $command->doctor_shift = $request->doctor_shift;
-            $command->type = $request->type;
-            $command->status_id = 3;
-            $command->room_id = $request->room_id;
-            $command->save();
-            $room = Room::find($request->room_id);
-            $room->status_id = 2;
-            $room->update();
-            DB::commit();
-            $array = ['status' => 200, 'message' => 'Se registró el registro', 'data' => $command];
-        } catch (Exception $ex) {
-            DB::rollBack();
-            $array = ['status' => 500, 'message' => 'No se pudo registrar el registro',  'data' => $ex];
-        } finally {
-            return $array;
+        {
+            $array = [];
+            DB::beginTransaction();
+            try {
+                $command = new Command();
+                $command->patient = $request->patient;
+                $command->address = $request->address;
+                $command->date_admission = date('Y-m-d H:i:s', strtotime($request->date_admission));
+                $command->diagnostic = $request->diagnostic;
+                $command->doctor = $request->doctor;
+                $command->nurse = $request->nurse;
+                $command->doctor_shift = $request->doctor_shift;
+                $command->type = $request->type;
+                $command->status_id = 3;
+                $command->room_id = $request->room_id;
+                $command->weight = $request->weight;
+                $command->year_old = $request->year_old;
+                $command->phone = $request->phone;
+                $command->allergies = $request->allergies;
+                $command->save();
+                $room = Room::find($request->room_id);
+                $room->status_id = 2;
+                $room->update();
+                DB::commit();
+                $array = ['status' => 200, 'message' => 'Se registró el registro', 'data' => $command];
+            } catch (Exception $ex) {
+                DB::rollBack();
+                $array = ['status' => 500, 'message' => 'No se pudo registrar el registro',  'data' => $ex];
+            } finally {
+                return $array;
+            }
         }
-    }
 
-    public function editCommand(Request $request)
-    {
-        $array = [];
-        DB::beginTransaction();
-        try {
-            $command = Command::find($request->id);
-            $command->patient = $request->patient;
-            $command->address = $request->address;
-            $command->diagnostic = $request->diagnostic;
-            $command->doctor = $request->doctor;
-            $command->nurse = $request->nurse;
-            $command->doctor_shift = $request->doctor_shift;
-            $room = Room::find($command->room_id);
-            $room->status_id = 1;
-            $room->update();
-            $command->room_id = $request->room_id;
-            $room = Room::find($request->room_id);
-            $room->status_id = 2;
-            $room->update();
-            $command->save();
-            DB::commit();
-            $command->room_name=$command->room->name;
-            $array = ['status' => 200, 'message' => 'Se actualizo el registro', 'data' => $command]; 
-        } catch (Exception $ex) {
-            DB::rollBack();
-            $array = ['status' => 500, 'message' => 'No se pudo actualizar el registro',  'data' => $ex];
-        }finally{
-            return $array;
+        public function editCommand(Request $request)
+        {
+            $array = [];
+            DB::beginTransaction();
+            try {
+                $command = Command::find($request->id);
+                $command->patient = $request->patient;
+                $command->address = $request->address;
+                $command->diagnostic = $request->diagnostic;
+                $command->doctor = $request->doctor;
+                $command->nurse = $request->nurse;
+                $command->doctor_shift = $request->doctor_shift;
+                $command->type = $request->type;
+                $command->weight = $request->weight;
+                $command->year_old = $request->year_old;
+                $command->phone = $request->phone;
+                $command->allergies = $request->allergies;
+                $room = Room::find($command->room_id);
+                $room->status_id = 1;
+                $room->update();
+                $command->room_id = $request->room_id;
+                $room = Room::find($request->room_id);
+                $room->status_id = 2;
+                $room->update();
+                $command->save();
+                DB::commit();
+                $command->room_name=$command->room->name;
+                $array = ['status' => 200, 'message' => 'Se actualizo el registro', 'data' => $command]; 
+            } catch (Exception $ex) {
+                DB::rollBack();
+                $array = ['status' => 500, 'message' => 'No se pudo actualizar el registro',  'data' => $ex];
+            }finally{
+                return $array;
+            }
         }
-    }
 
     public function updateStatusCommand(Request $request)
     {

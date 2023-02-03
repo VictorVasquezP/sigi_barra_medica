@@ -32,7 +32,6 @@ class UsersTableSeeder extends Seeder
                 'settings' => NULL,
                 'created_at' => '2022-11-09 13:21:00',
                 'updated_at' => '2022-11-09 13:21:00',
-                'type_room_id' => NULL,
             ),
             1 => 
             array (
@@ -47,7 +46,6 @@ class UsersTableSeeder extends Seeder
                 'settings' => '{"locale":"es"}',
                 'created_at' => '2023-01-29 18:52:39',
                 'updated_at' => '2023-01-29 18:52:39',
-                'type_room_id' => NULL,
             ),
             2 => 
             array (
@@ -62,7 +60,6 @@ class UsersTableSeeder extends Seeder
                 'settings' => '{"locale":"es"}',
                 'created_at' => '2023-01-29 18:53:06',
                 'updated_at' => '2023-01-30 04:41:06',
-                'type_room_id' => NULL,
             ),
             3 => 
             array (
@@ -77,7 +74,6 @@ class UsersTableSeeder extends Seeder
                 'settings' => '{"locale":"es"}',
                 'created_at' => '2023-01-30 04:36:41',
                 'updated_at' => '2023-01-30 04:36:41',
-                'type_room_id' => NULL,
             ),
             4 => 
             array (
@@ -92,7 +88,6 @@ class UsersTableSeeder extends Seeder
                 'settings' => '{"locale":"es"}',
                 'created_at' => '2023-01-30 04:40:52',
                 'updated_at' => '2023-01-30 04:40:52',
-                'type_room_id' => NULL,
             ),
         ));
         
