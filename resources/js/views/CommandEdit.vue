@@ -173,6 +173,7 @@ export default {
                 var token = $('meta[name="csrf-token"]').attr('content');
                 this.serviceCommand.editCommand(this.command,token).then(response => { 
                     this.showspinner=false;
+                    console.log(response.data);
                     if(response.status==200){
                         Swal.fire({
                             icon: 'success',

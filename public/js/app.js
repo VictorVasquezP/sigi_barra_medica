@@ -5062,6 +5062,7 @@ vue__WEBPACK_IMPORTED_MODULE_3___default.a.component('datetime', vue_datetime__W
         var token = $('meta[name="csrf-token"]').attr('content');
         this.serviceCommand.editCommand(this.command, token).then(function (response) {
           _this.showspinner = false;
+          console.log(response.data);
           if (response.status == 200) {
             sweetalert2_dist_sweetalert2_js__WEBPACK_IMPORTED_MODULE_1___default.a.fire({
               icon: 'success',

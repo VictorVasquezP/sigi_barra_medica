@@ -114,7 +114,7 @@ class CommandController extends VoyagerBaseController
                 $array = ['status' => 200, 'message' => 'Se actualizo el registro', 'data' => $command]; 
             } catch (Exception $ex) {
                 DB::rollBack();
-                $array = ['status' => 500, 'message' => 'No se pudo actualizar el registro',  'data' => $ex];
+                $array = ['status' => 500, 'message' => 'No se pudo actualizar el registro',  'data' => $ex->getMessage()];
             }finally{
                 return $array;
             }
