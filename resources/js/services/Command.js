@@ -73,4 +73,15 @@ export class CommandService {
         const data = await response.json();
         return data;
     }
+
+    getTypesRooms = async() => {
+        const response = await fetch('/sigi_barra_medica/public/api/typerooms');
+        const data = await response.json();
+        return data;
+    }
+    getRoomsWhere = async(type) => {
+        const response = await fetch('/sigi_barra_medica/public/api/roomswhere/'+type);
+        const data = await response.json();
+        return data;
+    }
 }

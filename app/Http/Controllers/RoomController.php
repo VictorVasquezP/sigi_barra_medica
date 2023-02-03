@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Command;
 use App\Models\Room;
+use App\Models\TypeRoom;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -223,6 +224,49 @@ class RoomController extends VoyagerBaseController
             }
         }catch(\Exception $e){
             $array = ['status'=>500, 'message' => 'No se pudo realizar la consulta', 'data'=>$rooms];
+        }finally{
+            return $array;
+        }
+    }
+
+    public function typesrooms(){
+        $array = [];
+        try{
+            $types = TypeRoom::all();
+            if(count($types) > 0){
+                $array = ['status' => 200, 'message' => 'Se encontraron resultados', 'data'=> $types];
+            }else{
+                $array = ['status'=>204, 'message' => 'No se encontraron resultados', 'data'=>$types];
+            }
+        }catch(\Exception $e){
+            $array = ['status'=>500, 'message' => 'No se pudo realizar la consulta', 'data'=>$types];
+        }finally{
+            return $array;
+        }
+    }
+
+    public function roomswhere($type){
+        switch($type){
+            case 'Quirofano':
+                $type=1;
+                break;
+            case 'Hospitalizacion':
+                $type=2;
+                break;
+            case 'Urgencias':
+                $type=3;
+                break;
+        }
+        $array = [];
+        try{
+            $types = Room::all()->where('type',$type);
+            if(count($types) > 0){
+                $array = ['status' => 200, 'message' => 'Se encontraron resultados', 'data'=> $types];
+            }else{
+                $array = ['status'=>200, 'message' => 'No se encontraron resultados', 'data'=>$types];
+            }
+        }catch(\Exception $e){
+            $array = ['status'=>500, 'message' => 'No se pudo realizar la consulta', 'data'=>$types];
         }finally{
             return $array;
         }
