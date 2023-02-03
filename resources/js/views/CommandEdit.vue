@@ -17,13 +17,29 @@
                                 <label for="first_name" class="control-label">Nombre del paciente</label>
                                 <h4 id="hpatient">{{ command.patient }}</h4>
                             </div>
+                            <div class="form-group form-wizard col-md-3">
+                                <label for="first_name" class="control-label">Edad</label>
+                                <h4 id="hpatient">{{ command.year_old }}</h4>
+                            </div>
+                            <div class="form-group form-wizard col-md-3">
+                                <label for="first_name" class="control-label">Peso</label>
+                                <h4 id="hpatient">{{ command.weight }}</h4>
+                            </div>
                             <div class="form-group form-wizard col-md-6">
                                 <label for="address" class="control-label">Dirección</label>
                                 <h4 id="haddres">{{ command.address }}</h4>
                             </div>
                             <div class="form-group form-wizard col-md-6">
+                                <label for="address" class="control-label">Telefono</label>
+                                <h4 id="haddres">{{ command.phone }}</h4>
+                            </div>
+                            <div class="form-group form-wizard col-md-6">
                                 <label for="address" class="control-label">Diagnostico</label>
                                 <h4 id="hdiagnostic">{{ command.diagnostic }}</h4>
+                            </div>
+                            <div class="form-group form-wizard col-md-6">
+                                <label for="address" class="control-label">Alergias</label>
+                                <h4 id="hdiagnostic">{{ command.allergies }}</h4>
                             </div>
                             <div class="form-group form-wizard col-md-6">
                                 <label for="first_name" class="control-label">Nombre Doctor</label>

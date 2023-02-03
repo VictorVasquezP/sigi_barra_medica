@@ -5023,6 +5023,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -68841,6 +68857,44 @@ var render = function () {
                   _vm._v(" "),
                   _c(
                     "div",
+                    { staticClass: "form-group form-wizard col-md-3" },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "control-label",
+                          attrs: { for: "first_name" },
+                        },
+                        [_vm._v("Edad")]
+                      ),
+                      _vm._v(" "),
+                      _c("h4", { attrs: { id: "hpatient" } }, [
+                        _vm._v(_vm._s(_vm.command.year_old)),
+                      ]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "form-group form-wizard col-md-3" },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "control-label",
+                          attrs: { for: "first_name" },
+                        },
+                        [_vm._v("Peso")]
+                      ),
+                      _vm._v(" "),
+                      _c("h4", { attrs: { id: "hpatient" } }, [
+                        _vm._v(_vm._s(_vm.command.weight)),
+                      ]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
                     { staticClass: "form-group form-wizard col-md-6" },
                     [
                       _c(
@@ -68868,11 +68922,49 @@ var render = function () {
                           staticClass: "control-label",
                           attrs: { for: "address" },
                         },
+                        [_vm._v("Telefono")]
+                      ),
+                      _vm._v(" "),
+                      _c("h4", { attrs: { id: "haddres" } }, [
+                        _vm._v(_vm._s(_vm.command.phone)),
+                      ]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "form-group form-wizard col-md-6" },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "control-label",
+                          attrs: { for: "address" },
+                        },
                         [_vm._v("Diagnostico")]
                       ),
                       _vm._v(" "),
                       _c("h4", { attrs: { id: "hdiagnostic" } }, [
                         _vm._v(_vm._s(_vm.command.diagnostic)),
+                      ]),
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "form-group form-wizard col-md-6" },
+                    [
+                      _c(
+                        "label",
+                        {
+                          staticClass: "control-label",
+                          attrs: { for: "address" },
+                        },
+                        [_vm._v("Alergias")]
+                      ),
+                      _vm._v(" "),
+                      _c("h4", { attrs: { id: "hdiagnostic" } }, [
+                        _vm._v(_vm._s(_vm.command.allergies)),
                       ]),
                     ]
                   ),

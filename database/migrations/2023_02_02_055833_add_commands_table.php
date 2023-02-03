@@ -15,7 +15,7 @@ class AddCommandsTable extends Migration
     {
         Schema::table('commands', function (Blueprint $table) {
             $table->string('weight', 10)->nullable();
-            $table->integer('year_old')->nullable();
+            $table->string('year_old',10)->nullable();
             $table->string('phone',15)->nullable();
             $table->string('allergies',100)->nullable();
         });
