@@ -269,12 +269,15 @@ export default {
             var token = $('meta[name="csrf-token"]').attr('content');
             this.serviceCommand.saveInsumos(this.myproducts, this.newproducts, token, this.command.id).then(response => {
                 if (response.status === 200) {
+                    this.newproducts = [];
+                    this.getInsumos(this.command.id);
                     Swal.fire({
                         icon: 'success',
                         title: response.message,
                         showConfirmButton: false,
                         timer: 1500,
-                    })
+                    });
+
                 } else {
                     Swal.fire({
                         icon: 'error',
