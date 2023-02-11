@@ -122,8 +122,6 @@
             </div>
         </div>
         <div class="text-center">
-            <button v-if="(command.status_id == 3) || (command.status_id < 5 && role <= 2)" class="btn btn-primary"
-                @click="saveSale">Guardar</button>
             <button v-if="(command.status_id == 3)" class="btn btn-warning" @click="updateStatusCommand(1)">Cerrar
                 cuenta</button>
             <button v-if="(role == 1 || role == 2) && (command.status_id == 4)" class="btn btn-dark"
@@ -344,7 +342,10 @@ export default {
                 this.price = 0;
                 this.product_id = undefined;
                 this.calculateTotal(this.myproducts);
-
+                setTimeout(() => {  
+                    this.saveSale();
+                }, "500");
+                
             } else {
                 Swal.fire({
                     icon: 'warning',
@@ -373,6 +374,9 @@ export default {
                 this.calculateTotal(this.myproducts);
 
                 $("[data-dismiss=modal]").trigger({ type: "click" });
+                setTimeout(() => {  
+                    this.saveSale();
+                }, "500");  
             } else {
                 Swal.fire({
                     icon: 'warning',
@@ -387,10 +391,14 @@ export default {
             item.total = (Number.parseInt(item.quantity) * Number.parseFloat(item.price)).toFixed(2);
 
             var item2 = this.newproducts.find(x => x.id == id);
-            item2.quantity = Number.parseInt(item2.quantity) + 1;
-            item2.total = (Number.parseInt(item2.quantity) * Number.parseFloat(item2.price)).toFixed(2);
-
+            if(item2){
+                item2.quantity = Number.parseInt(item2.quantity) + 1;
+                item2.total = (Number.parseInt(item2.quantity) * Number.parseFloat(item2.price)).toFixed(2);
+            }
             this.calculateTotal(this.myproducts);
+            setTimeout(() => {  
+                    this.saveSale();
+            }, "500");
         },
         reduceProduct: function (id) {
             for (var i = 0; i < this.myproducts.length; i++) {
@@ -412,6 +420,9 @@ export default {
                 }
             }
             this.calculateTotal(this.myproducts);
+            setTimeout(() => {  
+                    this.saveSale();
+                }, "500");
         },
         removeProduct: function (id) {
             Swal.fire({
@@ -436,8 +447,12 @@ export default {
                     }
                     this.calculateTotal(this.myproducts);
                     Swal.fire('Quitado!', '', 'success');
+                    setTimeout(() => {  
+                    this.saveSale();
+                }, "500");
                 }
             });
+            
         },
         editProduct: function (id) {
             var item = this.myproducts.find(x => x.id == id);
@@ -465,6 +480,9 @@ export default {
                     this.calculateTotal(this.myproducts);
                 }
             });
+            setTimeout(() => {  
+                    this.saveSale();
+                }, "500");
         },
         calculateTotal: function (list) {
             var aux = 0;

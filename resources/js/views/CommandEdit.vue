@@ -61,6 +61,10 @@
                                 <label for="first_name" class="control-label">Doctor en turno</label>
                                 <h4 id="hdoctor_shift">{{ command.doctor_shift }}</h4>
                             </div>
+                            <div class="form-group form-wizard col-md-6">
+                                <label for="first_name" class="control-label">Fecha de ingreso</label>
+                                <h4 id="hdoctor_shift">{{ command.date_admission }}</h4>
+                            </div>
                         </div>
                     </div>
                     <div class="panel-footer" v-if="(command.status_id==3) || (command.status_id < 5 && role_id <= 2)">
@@ -134,6 +138,10 @@
                                 <label for="first_name" class="control-label">Doctor en turno</label>
                                 <input type="text" id="doctor_shift" name="doctor_shift" class="form-control" maxlength="80"
                                     minlength="1" placeholder="Doctor en turno" required v-model="command.doctor_shift">
+                            </div>
+                            <div class="form-group form-wizard col-md-6 text-center">
+                                <label for="start_date" class="control-label">Fecha de Ingreso </label>
+                                <input type="date" id="date_admission" name="date_admission" class="form-control" required v-model="command.date_admission">
                             </div>
                         </div>
                     </div>

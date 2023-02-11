@@ -6,6 +6,7 @@ use App\Models\Command;
 use App\Models\ProductCommand;
 use App\Models\Role;
 use App\Models\Room;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -93,6 +94,7 @@ class CommandController extends VoyagerBaseController
                 $command->patient = $request->patient;
                 $command->address = $request->address;
                 $command->diagnostic = $request->diagnostic;
+                $command->date_admission = date('Y-m-d H:i:s', strtotime($request->date_admission));
                 $command->doctor = $request->doctor;
                 $command->nurse = $request->nurse;
                 $command->doctor_shift = $request->doctor_shift;
@@ -111,6 +113,7 @@ class CommandController extends VoyagerBaseController
                 $command->save();
                 DB::commit();
                 $command->room_name=$command->room->name;
+                $command->date_admission= Carbon::parse($command->date_admission)->format('Y-m-d');
                 $array = ['status' => 200, 'message' => 'Se actualizo el registro', 'data' => $command]; 
             } catch (Exception $ex) {
                 DB::rollBack();
@@ -201,6 +204,7 @@ class CommandController extends VoyagerBaseController
 
         $command->room_name=$command->room->name;
 
+        $command->date_admission= Carbon::parse($command->date_admission)->format('Y-m-d');
         
         return Voyager::view($view, compact('dataType', 'dataTypeContent', 'isModelTranslatable','role_id','command'));
     }
