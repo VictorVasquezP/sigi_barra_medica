@@ -478,11 +478,12 @@ export default {
                     item.price = Number.parseInt(result.value.price).toFixed(2);
                     item.total = (Number.parseInt(item.quantity) * Number.parseFloat(item.price)).toFixed(2);
                     this.calculateTotal(this.myproducts);
-                }
-            });
-            setTimeout(() => {  
+                    setTimeout(() => {  
                     this.saveSale();
                 }, "500");
+                }
+            });
+            
         },
         calculateTotal: function (list) {
             var aux = 0;

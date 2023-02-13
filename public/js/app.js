@@ -5688,11 +5688,11 @@ Vue.component("v-select", vue_select__WEBPACK_IMPORTED_MODULE_3___default.a);
           item.price = Number.parseInt(result.value.price).toFixed(2);
           item.total = (Number.parseInt(item.quantity) * Number.parseFloat(item.price)).toFixed(2);
           _this10.calculateTotal(_this10.myproducts);
+          setTimeout(function () {
+            _this10.saveSale();
+          }, "500");
         }
       });
-      setTimeout(function () {
-        _this10.saveSale();
-      }, "500");
     },
     calculateTotal: function calculateTotal(list) {
       var aux = 0;
