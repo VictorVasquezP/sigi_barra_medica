@@ -85,7 +85,7 @@
     rowsPerPageLabel: 'Productos por página'
 }">
                         <template slot="table-row" slot-scope="props"
-                            v-if="(command.status_id == 3) || (command.status_id < 5 && role <= 2)">
+                            v-if="(command.status_id == 3) || (command.status_id <= 5 && role <= 2)">
                             <span v-if="props.column.field == 'actions'"
                                 style="display: flex; justify-content: space-evenly;">
                                 <button class="btn-product-list btn-increment" @click="incrementProduct(props.row.id)">

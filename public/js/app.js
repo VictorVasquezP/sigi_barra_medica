@@ -69118,7 +69118,7 @@ var render = function () {
               ]),
               _vm._v(" "),
               _vm.command.status_id == 3 ||
-              (_vm.command.status_id < 5 && _vm.role_id <= 2)
+              (_vm.command.status_id <= 5 && _vm.role_id <= 2)
                 ? _c("div", { staticClass: "panel-footer" }, [
                     _c(
                       "button",
@@ -70132,7 +70132,7 @@ var render = function () {
                   key: "table-row",
                   fn: function (props) {
                     return _vm.command.status_id == 3 ||
-                      (_vm.command.status_id < 5 && _vm.role <= 2)
+                      (_vm.command.status_id <= 5 && _vm.role <= 2)
                       ? [
                           props.column.field == "actions"
                             ? _c(

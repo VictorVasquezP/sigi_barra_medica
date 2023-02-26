@@ -224,6 +224,7 @@ class CommandController extends VoyagerBaseController
                 if ($insumos->contains('id', '=', $product["id"])) { // si contiene el insumo es que no es nuevo
                     $insumo = ProductCommand::find($product["id"]);
                     $insumo->quantity = $product["quantity"];
+                    $insumo->name = $product["name"];
                     $insumo->total = $product["total"];
                     if($permission){
                         $insumo->price = $product["price"];
